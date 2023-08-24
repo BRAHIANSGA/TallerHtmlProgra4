@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -32,6 +32,10 @@
         color: aqua
     }
 
+    a {
+        color: white;
+    }
+
     #student {
         color: white;
     }
@@ -41,7 +45,7 @@
     <div
         style="background-color: rgba(0, 0, 0, 0.877); color: white; display:flex;align-items:center;justify-content: center;flex-direction: column; margin: 3%;">
         <img src="img/logo.png" alt="logo ucp" style="width: 30%;">
-        <h1 class="text-center">Taller Html</h1>
+        <h1 class="text-center">Enlaces a Paginas de Internet y Paginas Locales</h1>
     </div>
     <section class="text-center" style="margin: 3%;background-color: rgba(0, 0, 0, 0.877); color: white;">
         <h2>Presentado por:</h2>
@@ -54,100 +58,88 @@
         </p>
         <ul style="text-align: left;">
             <li>
-                <p><strong>Párrafo 1:</strong> Construir una página en html que contenga un <strong> título y cuatro
-                        párrafos.</strong> Dentro de
-                    cada
-                    párrafo se debe utilizar <strong>dos veces</strong> cada una de las siguientes etiquetas:
-                    <em>strong</em> y <em>em</em>
-                </p>
-            </li>
-            <li>
-                <a href="2.html">
+                <a href="https://www.manualweb.net/html/enlaces-html/">
                     <p>
-                        <strong>Párrafo 2:</strong> Construir una <em>página en html</em> que contenga un
-                        <strong>título</strong> y un <strong>texto</strong> dentro la etiqueta <em>pre.</em>
+                        <h3>¿Qué son los enlaces en HTML?</h3> Lo más importante de los documentos HTML son los enlaces.
+                        Ya que
+                        mediante los enlaces en HTML podemos comunicar una página con otra. De esta forma, enlazando
+                        documentos HTML podemos acabar tejiendo lo que es Internet. Para crear un enlace en HTML
+                        utilizamos el elemento A con la siguiente sintaxis: Contenido del enlace
+                        Pero solo con esto el enlace no tendrá mucha utilidad ya que el principal objetivo del enlace es
+                        enlazar a un destino.
+                        Para poder indicar el destino de un enlace utilizamos el atributo href. En valor del atributo
+                        href puede ser cualquier URI que represente un recurso.
+                        Es decir, una página, una parte de una página, una URL genérica, un archivo,… De esta forma el
+                        enlace en HTML lo crearemos con la sintaxis:
                     </p>
                 </a>
             </li>
             <li>
-                <p>
-                    <strong>Párrafo 3:</strong>
-                    Construir una <em>página en html</em>que contenga <em>cuatro párrafos</em>. Dos de ellos deben
-                    contener
-                    <strong>dos enlaces a sitios en internet</strong>, y dos de ellos deben contener <strong>enlaces a
-                        páginas locales.</strong>
+                <a href="https://www.w3schools.com/tags/att_a_target.asp">
+                    <p>
+                        Pero, ¿dónde se abre el enlace? Pues por defecto y si no hemos configurado nada en el navegador
+                        web que estemos utilizando el enlace se abre en la misma ventana en la que tengamos el enlace.
+                        <br>
+                        Si bien, en el enlace, podemos indicar el destino que queremos darle a dicho enlace. Eso lo
+                        podemos hacer mediante el atributo target. Los posibles valores que admite el atributo target
+                        son:
+                        <br>
 
-                </p>
-            </li>
-            <li>
-                <p>
-                    <strong>Párrafo 4:</strong>
-                    Construir una <em>página en html</em> que contenga una <strong>lista</strong> que <em>anide</em> dos
-                    <strong>listas dentro de ella.</strong>
-
-                </p>
-            </li>
-            <li>
-                <p>
-                    <strong>Párrafo 5:</strong>
-                    Construir una <em>página en html</em> que permita una <strong>lista en desorden</strong> que
-                    contenga a su vez una
-                    <strong>lista ordenada </strong>y una <em>lista de descripción.</em>
-
-                </p>
-            </li>
-            <li>
-                <p>
-                    <strong>Párrafo 6:</strong>
-                    Construir una página en html que permita mostrar cuatro párrafos donde cada uno
-                    contenga lo siguiente:
+                        <h3>Ejemplos de enlaces </h3>
+                    </p>
+                </a>
                 <ul>
-                    <li>
-                        <p><strong>Párrafo 1:</strong> una imagen cargada desde Internet</p>
+                    <li><strong>_blank</strong>, el agente de usuario intentará abrir el enlace en una nueva
+                        ventana. La nueva ventana no tendrá nombre.</li>
+                    <li><strong>_self</strong>, el agente de usuario intentará abrir el enlace en el mismo marco
+                        donde está en código actual.</li>
+                    <li><strong>_parent</strong>, el agente de usuario intentará abrir el enlace en el <a
+                            href="http://w3api.com/HTML/frameset">frameset</a> inmediatamente superior al que se
+                        encuentra la página. Esto suele suceder cuando tenemos el enlace en un área de frames.
                     </li>
-
-                    <li>
-                        <p><strong>Párrafo 2:</strong> una imagen que al darle click abra la página de la Universidad en
-                            una</p>
-                    </li>
-                    ventana nueva.
-                    <li>
-                        <p><strong>Párrafo 3:</strong> una imagen que al darle click abra la página de la Universidad en
-                            la misma
-                            ventana.</p>
-                    </li>
-
-                    <li>
-                        <p><strong>Párrafo 4:</strong> una imagen que al darle click abra una página local.</p>
-                    </li>
-
+                    <li><strong>_top</strong>, el agente de usuario intentará abrir el enlace en la ventana
+                        padre. En el caso de que exista un <a href="http://w3api.com/HTML/frameset">frameset</a>
+                        lo eliminará y se hará con toda la ventana.</li>
+                    <li><strong>nombre_marco</strong>, se podrá indicar el nombre de un frame. En este caso el
+                        agente de usuario intentará abrir el enlace en el <a
+                            href="http://w3api.com/HTML/frame">frame</a> que coincida con el nombre. En el caso
+                        de no existir un <a href="http://w3api.com/HTML/frame">frame</a> con ese nombre lo
+                        abrirá en una nueva ventana, asignándole dicho nombre.</li>
                 </ul>
+                <h3>Ejemplos de enlaces </h3>
+                <pre class="highlight">
+                        <code>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"documento.html"</span><span class="nt">&gt;</span>Enlace a un documento<span class="nt">&lt;/a&gt;</span>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"documento.html#resumen"</span><span class="nt">&gt;</span>Enlace a una parte de un documento<span class="nt">&lt;/a&gt;</span>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.manualweb.net"</span><span class="nt">&gt;</span>Enlace a una web<span class="nt">&lt;/a&gt;</span>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.manualweb.net/tutorial-html/"</span><span class="nt">&gt;</span>Enlace a un directorio<span class="nt">&lt;/a&gt;</span>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"miimagen.png"</span><span class="nt">&gt;</span>Enlace a una imagen<span class="nt">&lt;/a&gt;</span>
+                            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"mimusica.mp3"</span><span class="nt">&gt;</span>Enlace a un archivo de sonido<span class="nt">&lt;/a&gt;</span>
+                        </code>
+                </pre>
 
-                </p>
-            </li>
-            <li>
-                <p>
-                    <strong>Párrafo 7:</strong>
-                    Crear una página en html que muestre en una tabla los datos personales de 10 compañeros
-                    de estudio. Los colores y formato de la tabla se deben modificar con estilos.
-                </p>
-            </li>
-            <li>
-                <p>
-                    <strong>Párrafo 8:</strong>
-                    Crear una página en html que tenga una tabla en donde se puedan ubicar todos los
-                    elementos descritos en el punto 6.
 
-                </p>
             </li>
             <li>
-                <p>
-                    <strong>Párrafo 9:</strong>
-                    Crear una página en html que permita cargar dos imágenes que utilicen la etiqueta <map>
-                        para crear cuatro áreas diferentes en cada imagen para acceder a cuatro sitios de internet
-                        diferentes.
-                </p>
+                <a href="index.html">
+                    <p>
+                        En la siguiente pagina podemos encontrar un ejemplo donde se usa la etiqueta STRONG en color
+                        rojo y
+                        la etiqueta EM en color azul aguamarina.
+
+                    </p>
+                </a>
             </li>
+            <li>
+                <a href="2.html">
+                    <p>
+                        En la siguiente pagina podemos encontrar una descripcion y un ejemplo de la etiqueta PRE y sus
+                        cualidades como ejemplo de unestilo configurado en css.
+
+                    </p>
+                </a>
+            </li>
+
 
         </ul>
 
