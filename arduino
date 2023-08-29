@@ -1,0 +1,1956 @@
+#include "StateMachineLib.h"
+#include <Adafruit_NeoPixel.h>
+
+////////////////////////////
+//Pines de entradas
+#define pinS0 10 //10
+#define pinS4 4 // 4
+#define proxTorni 7
+#define pinKeyTransistor 12 //12
+// pinSDA = 2; pinSCL = 3
+/////////////////////////////
+/////////////////////////////
+//Pines de Salida
+#define pinRGB 9
+#define pinRELE 8
+#define pinSW 11
+#define onOffSource 5
+
+/////////////////////////////
+#define numKaidi 36
+/////////////////////////////
+//Otras Definiciones
+#define BAUDRATE0 115200
+#define BAUDRATE1 115200
+// DEFINICIONES PARAMETROS LED RGB
+#define T_LUZ 100 //Tiempo que tarda cada jueguito de luces en ms
+#define LED_COUNT 23 // How many NeoPixels are attached to the Arduino?
+#define BRIGHTNESS 50// NeoPixel brightness, 0 (min) to 255 (max)
+
+enum State
+{
+  S0 = 0,
+  S1 = 1,
+  S2 = 2,
+  S3 = 3,
+  S4 = 4,
+  S5 = 5,
+  S6 = 6,
+  S7 = 7,
+  S8 = 8,
+  S9 = 9
+};
+
+enum Input
+{
+  Input0 = 0,
+  Input1 = 1,
+  Input4 = 2,
+  Input5 = 3,
+  Input6 = 4,
+  Input14 = 5,
+  Input16 = 6,
+  Input17 = 7,
+  Input20 = 8,
+  Input21 = 9,
+  Input22 = 10,
+  Input32 = 11,
+  Input33 = 12,
+  Input36 = 13,
+  Input37 = 14,
+  Input38 = 15,
+  Input64 = 16,
+  Input65 = 17,
+  Input68 = 18,
+  Input69 = 19,
+  Input70 = 20,
+  Input80 = 21,
+  Input81 = 22,
+  Input84 = 23,
+  Input85 = 24,
+  Input86 = 25,
+  Input134 = 26,
+  Input142 = 27,
+  Input150 = 28,
+  Input158 = 29,
+  Input166 = 30,
+  Input174 = 31,
+  Input198 = 32,
+  Input206 = 33,
+  Input214 = 34,
+  Input222 = 35,
+  Input132 = 36,
+  Unknown = 62
+  };
+
+enum Output
+{
+  OutputS0 = 0,
+  OutputS1 = 1,
+  OutputS2 = 2,
+  OutputS3 = 3,
+  OutputS4 = 4,
+  OutputS5 = 5,
+  OutputS6 = 6,
+  OutputS7 = 7,
+  OutputS8 = 8,
+  OutputS9 = 9
+
+};
+
+
+const uint8_t MAX_ITERATIONS = 5;
+
+// Creación de la maquina de estados
+StateMachine stateMachine(10,112);
+
+// Variables de entrada y salida de la unidad de control
+Input input;
+Output ouput;
+
+Input currentInput = Input::Unknown;
+
+unsigned int updateInput = 1;
+unsigned int x = 0;
+unsigned int onTime = 0;
+
+
+unsigned int onCPUIter = 0;
+unsigned int OutputControl_Unit = 0;
+unsigned int inputTemp = 0;
+unsigned long onTimeMax = 0;
+
+/////////////////////////////
+// Definición de las variables a utilizar
+
+byte Fuente_PSON = 0;
+byte readS4 = 0;
+byte readS0 = 0;
+byte readRx0 = 0;
+byte readRx1 = 0;
+byte SDA_E = 0;
+byte TorniProx = 0;
+byte ONWindows = 0;
+byte onFunc = 0;
+byte internetON = 0;
+byte onRGB = 1;
+byte serialDisponible = 0;
+byte serialDisponible1 = 0;
+byte stateActual = 0;
+byte processON = 0;
+byte estadoAnterior = 0;
+byte estadoActual1 = 0;
+
+uint8_t iterSMS= 0;
+
+volatile bool estado_Inter = false;
+bool estadoLLaveActual = false;
+bool estadoLLaveAnterior = false;
+bool gsmConnect = true; // True esta conectado y False desconectado
+bool msnSend = false;
+bool onGSM = false;
+bool onGSMWindows = false;
+bool windowsOnGSM = false;
+bool fuenteON = false;
+bool S1_S0 = false;
+bool swOFFP = false;
+bool offWindows = false;
+bool ON_SIM = false;
+bool sendE = false;
+bool onS0 = false;
+bool onCPU = false;
+bool S4_S0 = false;
+bool bucleExit = false;
+bool msnOk = false;
+bool commandC_ON = false;
+
+bool clearbuffer = false;
+
+unsigned char cpuSerial = ' ';
+volatile unsigned char temp3 = ' ';
+
+String PhoneNumberKaidi = "3217883797";
+String Respuesta = "";
+String msnGSM;
+char commandGSM[3];
+
+
+
+
+Adafruit_NeoPixel pixel(LED_COUNT, pinRGB, NEO_GRB + NEO_KHZ800); // PARA EL LED REGB
+
+void setupStateMachine()
+{
+  // Add transitions
+  /////////////////////////////////////// Estado S0
+  stateMachine.AddTransition (S0, S1, []() { return input == Input0; }); //0
+  stateMachine.AddTransition (S0, S1, []() { return input == Input4; });
+
+  stateMachine.AddTransition (S0, S2, []() { return input == Input6; });
+
+  stateMachine.AddTransition (S0, S5, []() { return input == Input17; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input21; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input33; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input37; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input65; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input69; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input81; });
+  stateMachine.AddTransition (S0, S5, []() { return input == Input85; }); //10
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S1
+  stateMachine.AddTransition (S1, S0, []() { return input == Input1; });
+  stateMachine.AddTransition (S1, S0, []() { return input == Input5; });
+
+  stateMachine.AddTransition (S1, S2, []() { return input == Input6; });
+
+  stateMachine.AddTransition (S1, S5, []() { return input == Input16; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input20; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input32; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input36; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input64; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input68; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input80; });
+  stateMachine.AddTransition (S1, S5, []() { return input == Input84; }); //21
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S2
+  stateMachine.AddTransition (S2, S1, []() { return input == Input0; });
+  stateMachine.AddTransition (S2, S1, []() { return input == Input4; });
+  stateMachine.AddTransition (S2, S0, []() { return input == Input1; });
+  stateMachine.AddTransition (S2, S0, []() { return input == Input5; });
+
+  stateMachine.AddTransition (S2, S5, []() { return input == Input14; });
+  stateMachine.AddTransition (S2, S5, []() { return input == Input22; });
+  stateMachine.AddTransition (S2, S5, []() { return input == Input38; });
+  stateMachine.AddTransition (S2, S5, []() { return input == Input70; });
+  stateMachine.AddTransition (S2, S5, []() { return input == Input86; }); //30
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S3
+
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S4
+  stateMachine.AddTransition (S4, S1, []() { return input == Input0; });
+  stateMachine.AddTransition (S4, S1, []() { return input == Input4; });
+  stateMachine.AddTransition (S4, S1, []() { return input == Input132; });
+  stateMachine.AddTransition (S4, S0, []() { return input == Input1; });
+  stateMachine.AddTransition (S4, S0, []() { return input == Input5; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input142; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input150; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input158; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input166; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input174; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input198; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input206; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input214; });
+  stateMachine.AddTransition (S4, S5, []() { return input == Input222; });  //44
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S5
+  stateMachine.AddTransition (S5, S0, []() { return input == Input1; });
+  stateMachine.AddTransition (S5, S0, []() { return input == Input5; });
+
+  stateMachine.AddTransition (S5, S1, []() { return input == Input0; });
+  stateMachine.AddTransition (S5, S1, []() { return input == Input4; });
+
+  stateMachine.AddTransition (S5, S2, []() { return input == Input6; });
+
+  stateMachine.AddTransition (S5, S4, []() { return input == Input134; }); //50
+
+  stateMachine.AddTransition (S5, S3, []() { return input == Input16; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input17; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input20; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input21; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input22; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input150; });
+  stateMachine.AddTransition (S5, S3, []() { return input == Input158; }); //57
+
+  stateMachine.AddTransition (S5, S7, []() { return input == Input14; });
+  stateMachine.AddTransition (S5, S7, []() { return input == Input142; });
+  stateMachine.AddTransition (S5, S7, []() { return input == Input174; }); //60
+
+  stateMachine.AddTransition (S5, S8, []() { return input == Input64; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input65; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input68; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input69; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input70; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input80; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input81; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input84; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input85; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input86; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input198; }); //71
+  stateMachine.AddTransition (S5, S8, []() { return input == Input206; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input214; });
+  stateMachine.AddTransition (S5, S8, []() { return input == Input222; }); //74
+
+
+  stateMachine.AddTransition (S5, S9, []() { return input == Input32; });
+  stateMachine.AddTransition (S5, S9, []() { return input == Input33; });
+  stateMachine.AddTransition (S5, S9, []() { return input == Input36; });
+  stateMachine.AddTransition (S5, S9, []() { return input == Input37; });
+  stateMachine.AddTransition (S5, S9, []() { return input == Input38; });
+  stateMachine.AddTransition (S5, S9, []() { return input == Input166; }); //80
+
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S6
+
+  stateMachine.AddTransition (S3, S5, []() { return input == Input0; }); //81
+  stateMachine.AddTransition (S3, S5, []() { return input == Input1; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input4; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input5; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input6; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input134; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input142; });
+  stateMachine.AddTransition (S3, S5, []() { return input == Input166; }); //88
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S7
+
+  stateMachine.AddTransition (S7, S5, []() { return input == Input6; });
+  stateMachine.AddTransition (S7, S5, []() { return input == Input134; });
+  stateMachine.AddTransition (S7, S5, []() { return input == Input166; });//91
+
+  ///////////////////////////////////////
+
+  /////////////////////////////////////// Estado S8
+
+  stateMachine.AddTransition (S8, S5, []() { return input == Input0; }); //92
+  stateMachine.AddTransition (S8, S5, []() { return input == Input1; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input4; }); 
+  stateMachine.AddTransition (S8, S5, []() { return input == Input5; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input6; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input16; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input17; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input20; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input21; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input22; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input134; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input142; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input150; });
+  stateMachine.AddTransition (S8, S5, []() { return input == Input158; }); //105
+
+  ///////////////////////////////////////
+
+
+  /////////////////////////////////////// Estado S9
+
+  stateMachine.AddTransition (S9, S5, []() { return input == Input0; });
+  stateMachine.AddTransition (S9, S5, []() { return input == Input1; });
+  stateMachine.AddTransition (S9, S5, []() { return input == Input4; });
+  stateMachine.AddTransition (S9, S5, []() { return input == Input5; });
+  stateMachine.AddTransition (S9, S5, []() { return input == Input6; });
+  stateMachine.AddTransition (S9, S5, []() { return input == Input134; }); //111
+
+
+  ///////////////////////////////////////
+
+  stateMachine.SetOnEntering(S0, funcS0);
+  stateMachine.SetOnEntering(S1, funcS1);
+  stateMachine.SetOnEntering(S2, funcS2);
+  stateMachine.SetOnEntering(S3, funcS3);
+  stateMachine.SetOnEntering(S4, funcS4);
+  stateMachine.SetOnEntering(S5, funcS5);
+  stateMachine.SetOnEntering(S6, funcS6);
+  stateMachine.SetOnEntering(S7, funcS7);
+  stateMachine.SetOnEntering(S8, funcS8);
+  stateMachine.SetOnEntering(S9, funcS9);
+
+}
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
+  //////////////////////////////////////////////////////
+  // CONFIGURACIÓN DE LA COMUNICACIÓN SERIAL
+  Serial.begin(BAUDRATE0); //TX0 y RX0 Arduino - CPU
+  //Serial1.begin(BAUDRATE1); // TX1 Y RX0 Arduino - GSM/GPS
+
+  //////////////////////////////////////////////////////
+  // CONFIGURACIÓN DE ENTRADAS Y SALIDAS DE LOS PINES
+  pinMode(pinS0, INPUT); //Pin S0 Tarjeta Lattepanda
+  pinMode(pinS4, INPUT); //Pin S4 Tarjeta Lattepanda
+  pinMode(proxTorni, INPUT); // Pin proxToniquete
+  pinMode(pinKeyTransistor, INPUT_PULLUP); // Pin de deteccion de activacion de fuente (llave y transistor)
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  pinMode(pinRGB, OUTPUT); //Pin de led RGB
+  pinMode(pinRELE, OUTPUT); //Pin Relé
+  digitalWrite(pinRELE, HIGH);
+  pinMode(pinSW, OUTPUT); //Pin de SW
+  digitalWrite(pinSW, LOW);
+  pinMode(onOffSource, OUTPUT); //Pin de ON/OFF FUENTE
+  digitalWrite(onOffSource, LOW);
+  //////////////////////////////////////////////////////
+  //onFirstArd = 1;
+  //////////////////////////////////////////////////////
+  //Inicio Y configuracion para el manejo del RGB
+  pixel.begin(); // INITIALIZE NeoPixel pixel object (REQUIRED)
+  pixel.show();// Turn OFF all pixels ASAP
+  pixel.setBrightness(BRIGHTNESS); // Set BRIGHTNESS to about 1/5 (max = 255)
+
+  //rainbow(10);// Flowing rainbow cycle along the whole pixel
+  //theaterChaseRainbow(50); // Rainbow-enhanced theaterChase variant
+  //juego_luces();
+
+  pixel.clear();
+  pixel.show();
+
+  if (gsmConnect)
+  {
+    delay(50);
+    memset(commandGSM, '\x00', 3);
+    clearSerial();
+    delay(100);
+    SIM7600_PowerOn();
+  }
+  //configuracionGSM();
+
+   currentInput = Input::Unknown;
+  setupStateMachine();
+
+  // Initial state
+
+  stateMachine.SetState(S0, false, true);
+  //CONFIGURACION DE LA INTERRUPCION PARA EL LED RGB DE TITILEO DE 1 SEG
+  TCCR3A = 0;// El registro de control A queda todo en 0, pines OC3A y OC3B deshabilitados
+  TCCR3B = 0;//limpia el registrador
+  TCCR3B |= (1<<CS30)|(1 << CS32); // configura prescaler para 1024: CS12 = 1 e CS10 = 1
+  TCNT3 = 0xC2F8;// inicia timer para desbordamiento 1 segundo
+   // 65536-(16MHz/1024/1Hz - 1) = 49912 = 0xC2F8
+  TIMSK3 |= (1 << TOIE3); // habilita la interrupcion del TIMER3
+  PRR1 |= (1<<PRTIM3);// Desactivar el TIMER3. Esto es para que no inicie hasta que se llama
+
+  if((digitalRead(pinS0) == 1) && (digitalRead(pinS4) == 1))
+  {
+      ledInicio(50);
+      // rainbow(10);
+      // pixel.clear();
+      // pixel.show();
+      onRGB = 0;
+  }
+
+  //////////////////////////////////////////////////////
+}
+
+void loop()
+{
+  // Read user input
+  input = static_cast<Input>(DECOINPUT());
+
+
+  // Update State Machine
+  stateMachine.Update();
+
+  outputArduino();
+}
+
+byte DECOINPUT()
+{
+  currentInput = Input::Unknown;
+  //readProxTorni = digitalRead(proxTorni);
+  if(updateInput == 1)
+  {
+    TorniProx = 0;
+    readS0 = digitalRead(pinS0); //S0
+    readS4 = digitalRead(pinS4); //S4
+
+
+    estadoActual1 = digitalRead(pinKeyTransistor);
+
+    if(estadoActual1 != estadoAnterior)
+    {
+      if (estadoActual1 == HIGH) 
+      {
+        // Flanco de subida detectado
+        Fuente_PSON = 1;
+      }
+      else
+      {
+      // Flanco de bajada detectado
+        Fuente_PSON = 0;
+      }
+      estadoAnterior = estadoActual1;
+    }
+
+    //Fuente_PSON = readpKeyTransistor;
+
+
+    /*estadoLLaveActual = readpKeyTransistor;
+    if(estadoLLaveActual == LOW && estadoLLaveAnterior == HIGH)
+    {
+      Fuente_PSON = 0;  //Fuente PS-ON
+    }
+    estadoLLaveAnterior = estadoLLaveActual; 
+  */
+    serialDisponible = Serial.available();
+    if ((serialDisponible <= 3) && (serialDisponible > 0) && (readS4 == 1)) //CPU
+    {
+      cpuSerial = Serial.read();
+      clearSerial();
+      serialDisponible = 0;
+      readRx0 = 1;
+    }else if((serialDisponible > 1))
+    {
+      clearSerial();
+      serialDisponible = 0;
+    }
+    
+    while ((Serial1.available() > 0) && gsmConnect && (bucleExit == false))
+    {
+      char msntemp = Serial1.read();
+      msnGSM += msntemp;
+
+      if (msnGSM.indexOf("+CMTI:") != -1) 
+      {
+        readRx1 = 1;
+        clearSerial1();
+        msnGSM = "";
+        bucleExit = true;
+        //Serial.println("CM");
+      }
+      clearbuffer = true;
+    }
+
+    if(clearbuffer)
+    {
+      msnGSM = "";
+      bucleExit = false;
+      clearbuffer = false;
+    }
+    
+  }
+
+  if((offWindows) && (readS4 == 0) && (stateActual == 4))
+  {
+    ONWindows = 0;
+  }
+
+
+  bitWrite(inputTemp, 0, Fuente_PSON);
+  bitWrite(inputTemp, 1, readS4);
+  bitWrite(inputTemp, 2, readS0);
+  bitWrite(inputTemp, 3, readRx0);
+  
+  bitWrite(inputTemp, 4, readRx1);
+  bitWrite(inputTemp, 5, SDA_E);
+  bitWrite(inputTemp, 6, TorniProx);
+  bitWrite(inputTemp, 7, ONWindows);
+
+  switch (inputTemp)
+  {
+    case 0: currentInput = Input::Input0; break;
+    case 1: currentInput = Input::Input1; break;
+    case 4: currentInput = Input::Input4; break;
+    case 5: currentInput = Input::Input5; break;
+    case 6: currentInput = Input::Input6; break;
+    case 14: currentInput = Input::Input14; break;
+    case 16: currentInput = Input::Input16; break;
+    case 17: currentInput = Input::Input17; break;
+    case 20: currentInput = Input::Input20; break;
+    case 21: currentInput = Input::Input21; break;
+    case 22: currentInput = Input::Input22; break;
+    case 32: currentInput = Input::Input32; break;
+    case 33: currentInput = Input::Input33; break;
+    case 36: currentInput = Input::Input36; break;
+    case 37: currentInput = Input::Input37; break;
+    case 38: currentInput = Input::Input38; break;
+    case 64: currentInput = Input::Input64; break;
+    case 65: currentInput = Input::Input65; break;
+    case 68: currentInput = Input::Input68; break;
+    case 69: currentInput = Input::Input69; break;
+    case 70: currentInput = Input::Input70; break;
+    case 80: currentInput = Input::Input80; break;
+    case 81: currentInput = Input::Input81; break;
+    case 84: currentInput = Input::Input84; break;
+    case 85: currentInput = Input::Input85; break;
+    case 86: currentInput = Input::Input86; break;
+    case 134: currentInput = Input::Input134; break;
+    case 142: currentInput = Input::Input142; break;
+    case 150: currentInput = Input::Input150; break;
+    case 158: currentInput = Input::Input158; break;
+    case 166: currentInput = Input::Input166; break;
+    case 174: currentInput = Input::Input174; break;
+    case 198: currentInput = Input::Input198; break;
+    case 206: currentInput = Input::Input206; break;
+    case 214: currentInput = Input::Input214; break;
+    case 132: currentInput = Input::Input132; break;
+    
+    default: 
+    {
+      currentInput = Input::Input1;
+      break;
+    }
+  }
+
+  return currentInput;
+}
+
+
+void funcS0()
+{
+  onCPUIter = 0;
+  ONWindows = 0;
+  updateInput = 1;
+  internetON = 0;
+  onRGB = 0;
+  onFunc = 0;
+  onTime = 0;
+  offWindows = false;
+
+  processON++;
+
+  if (S4_S0)
+  {
+    processON = 5;
+    S4_S0 = false;
+  }
+
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(pinSW, LOW);
+  digitalWrite(pinRELE, HIGH); // Rele
+  pixel.clear(); // RGB
+  pixel.show();
+
+  if(S1_S0 && (onGSM == false) && onS0)
+  {
+    if (gsmConnect)
+    {
+      Respuesta = "{KAIDI" + String(numKaidi) + "F";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+      }
+    }
+    iterSMS = 0;
+    msnSend = false;
+    Respuesta = "";
+    S1_S0 = false;
+    onS0 = false;
+  }
+  else if(S1_S0 && onGSM && onS0)
+  {
+    if (gsmConnect)
+    {
+      Respuesta = "{KAIDI" + String(numKaidi) + "f";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+
+      }
+    }
+    iterSMS = 0;
+    msnSend = false;
+    Respuesta = "";
+    S1_S0 = false;
+    onS0 = false;
+  }
+
+  stateActual = 0;
+  OutputControl_Unit = Output::OutputS0;
+}
+
+void funcS1()
+{
+  updateInput = 1;
+  onRGB = 1;
+  fuenteON = true;
+  S4_S0 = false;
+  onTime = 0;
+  S1_S0 = true;
+
+
+ 
+  if(onFunc == 1)
+  {
+    pixel.clear(); // RGB
+    pixel.show();
+    onFunc = 0;
+  }
+
+  if ((processON >= 5) && (readS4 == 0))
+  {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(pinSW, HIGH);
+    processON = 1;
+  }
+  processON++;
+
+  if(onGSM && commandC_ON)
+  {
+  
+    //msnSend = SendingShortMessage(PhoneNumberKaidi,"PF");
+    //msnSend = false;
+    onTimeMax = millis() + 25000;
+    while((digitalRead(pinS0) == LOW) && (millis() < onTimeMax));  
+
+    if(digitalRead(pinS0) == LOW)
+    {
+
+      digitalWrite(onOffSource, LOW);
+      Respuesta = "{KAIDI" + String(numKaidi) + "N";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+      }
+      iterSMS = 0;
+      msnSend = false;
+      Respuesta = "";
+      fuenteON = false;
+
+      //onGSM = false;
+    }
+    commandC_ON = false;
+  }
+
+
+  if ((ONWindows == 1) && !onGSM && onS0)
+  {
+     //msnSend = SendingShortMessage(PhoneNumberKaidi,"LP1");
+    if (gsmConnect)
+    {
+      Respuesta = "{KAIDI" + String(numKaidi) + "P";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+
+      }
+    }
+    iterSMS = 0;
+    msnSend = false;
+    Respuesta = "";
+    
+    ONWindows = 0;
+  //onS0 = false;
+  }
+
+  if(swOFFP && onGSM)
+  {
+    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(pinSW, LOW);
+    swOFFP = false;
+  }
+
+  if((readS4 == 0) && offWindows && onS0)
+  {
+     
+    if (gsmConnect)
+    {
+      
+      Respuesta = "{KAIDI" + String(numKaidi) + "P";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+
+      }
+      //msnSend = SendingShortMessage(PhoneNumberKaidi,"LP2");
+    }
+    iterSMS = 0;
+    msnSend = false;
+    offWindows = false;
+    Respuesta = "";
+  }
+
+  stateActual = 1;
+  OutputControl_Unit = Output::OutputS1;
+}
+
+void funcS2()
+{
+  //digitalWrite(LED_BUILTIN, LOW);
+  S4_S0 = false;
+  fuenteON = true;
+  updateInput = 1;
+  processON=3;
+  onTimeMax = 0;
+  onS0 = true;
+  onCPU = true;
+  /*
+  if (onFirstArd == 1 && firstKey == 1)
+  {
+    rainbow(10);
+    pixel.clear();
+    pixel.show();
+    onFirstArd = 0;
+    firstKey = 0;
+  }
+  */
+
+  if(onFunc == 1)
+  {
+    pixel.clear(); // RGB
+    pixel.show();
+    onFunc = 0;
+  }
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(pinSW, LOW);
+
+  if((onRGB == 1) && (readS4 == 1))
+  {
+      ledInicio(50);
+      // rainbow(10);
+      // pixel.clear();
+      // pixel.show();
+  }
+
+  if (offWindows)
+  {
+    if (gsmConnect)
+    {
+      Respuesta = "{KAIDI" + String(numKaidi) + "k";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;    
+      }
+    }
+    iterSMS = 0;
+    msnSend = false;
+    Respuesta = "";
+  }
+
+  stateActual = 2;
+  OutputControl_Unit = Output::OutputS2;
+}
+
+void funcS6()
+{
+  updateInput = 1;
+  //  delay(1000);
+
+  stateActual = 3;
+  OutputControl_Unit = Output::OutputS3;
+}
+
+void funcS4()
+{
+  updateInput = 1;
+  S4_S0 = true;
+  onS0 = true;
+  if(ONWindows && sendE)
+  {
+    if (gsmConnect)
+    {
+      Respuesta = "{KAIDI" + String(numKaidi) + "E";
+      while((!msnSend) && (iterSMS < 5))
+      {
+        msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+        iterSMS++;
+      }
+    }
+    iterSMS = 0;
+    msnSend = false;
+    sendE = false;
+    Respuesta = "";
+  }
+  //windowsOnGSM = true;
+  stateActual = 4;
+  OutputControl_Unit = Output::OutputS4;
+}
+
+void funcS5()
+{
+  updateInput = 0;
+
+  OutputControl_Unit = Output::OutputS5;
+}
+
+void funcS3()
+{
+  bucleExit = false;
+  updateInput = 0;
+  readRx1 = 0;
+  int b = 0;
+  msnOk = false;
+  updateInput = 0;
+  uint8_t answerTemp = 0;
+  String commandtemp = "";
+  //clearSerial1();
+  
+  msnOk = ReceivingShortMessage();
+  Respuesta = "";
+ /* delay(10);
+  Serial.print("P");
+  Serial.print(msnOk);
+  */
+  //sprintf(aux_str, "AT+CMGR=%d",j);
+
+  if (msnOk)
+  {
+    for (b = 0; b < 3; b++)
+    {
+      if(commandGSM[b] != '\0' )
+      {
+        /*
+        Serial.println("commandGSM");
+        Serial.flush();
+        Serial.println(commandGSM[b]);
+        Serial.flush();
+        */
+
+        switch (commandGSM[b])
+        {
+          case 'B':
+          {
+            commandtemp = "AT+CMGD=,4";
+             answerTemp = sendATcommand(commandtemp,"OK",5000);
+            delay(1);
+            Respuesta = "{KAIDI" + String(numKaidi) +"B"+String(answerTemp);
+            
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+
+            }
+            msnSend = false;
+            iterSMS = 0;
+            Respuesta = "";
+            commandGSM[b] = '\0';
+            commandtemp = "";
+            OutputControl_Unit = Output::OutputS3;
+            
+          }
+          case 'H':
+          {
+            Respuesta = "{KAIDI" + String(numKaidi) +String(inputTemp);
+            
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+
+            }
+            msnSend = false;
+            iterSMS = 0;
+            Respuesta = "";
+            commandGSM[b] = '\0';
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+            
+          case 'Y':
+          {
+            Respuesta = "{KAIDI" + String(numKaidi) +String(stateActual);
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+            }
+            commandGSM[b] = '\0';
+            msnSend = false;
+            iterSMS = 0;
+            Respuesta = "";
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+            
+          case 'G':
+          {
+            //GPS
+             commandGSM[b] = '\0';
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+
+          case 'C': // ON fuente
+          {
+            digitalWrite(onOffSource, HIGH);
+            onGSM = true;
+            Respuesta = "{KAIDI" + String(numKaidi) + "c";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+              if(msnSend)
+              {
+
+                processON = 4;
+                commandC_ON = true;
+              }
+            }
+             commandGSM[b] = '\0';
+            msnSend = false;
+            iterSMS = 0;
+            Respuesta = "";
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+
+          case 'F': // Fuente off forzado
+          {
+            /*
+            Respuesta = "{KAIDI" + String(numKaidi) + "_f";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+              if(msnSend)
+              {
+                Serial.println("ok");
+              }
+            }
+            */
+             commandGSM[b] = '\0';
+            onGSM = true; /////////////////////////////////////////////////////////////////////////////
+            digitalWrite(onOffSource, LOW);
+            //processON = 5; // cambio
+            msnSend = false;
+            iterSMS = 0;
+            Respuesta = "";
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+
+          case 'P': // pin SW apagando
+          {
+            /*
+            Respuesta = "{KAIDI" + String(numKaidi) + "_p";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+              if(msnSend)
+              {
+                Serial.println("ok");
+              }
+            }
+            */
+            digitalWrite(pinSW, HIGH);
+            digitalWrite(13, HIGH);
+            commandGSM[b] = '\0';
+            swOFFP = true;
+            msnSend = false;
+            offWindows = true;
+            iterSMS = 0;
+            Respuesta = "";
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+
+          case 'D': // pin SW Encendiendo
+          {
+
+            Respuesta = "{KAIDI" + String(numKaidi) + "d";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+            }
+            digitalWrite(pinSW, HIGH);
+            digitalWrite(13, HIGH);
+            commandGSM[b] = '\0';
+            msnSend = false;
+            iterSMS = 0;
+
+            Respuesta = "";
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+          
+          default:
+          {
+            delay(5);
+            commandGSM[b] = '\0';
+            OutputControl_Unit = Output::OutputS3;
+            break;
+          }
+        }
+      }
+    }
+    memset(commandGSM, '\x00', 3);
+  }
+
+
+  OutputControl_Unit = Output::OutputS3;
+}
+
+void funcS7()
+{
+  updateInput = 0;
+  readRx0 = 0;
+  switch (cpuSerial)
+  {
+    case 'H':
+      {
+        Serial.println(inputTemp);
+        Serial.flush();
+        cpuSerial = ' ';
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'O':
+      {
+        Serial.println(stateActual);
+        Serial.flush();
+        cpuSerial = ' ';
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'E':
+      {
+        ONWindows = 1;
+        cpuSerial = ' ';
+        sendE = true;
+        offWindows = false;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      
+      case 'K':
+      {
+        //ONWindows = 0;
+        sendE = false;
+        cpuSerial = ' ';
+        offWindows = true;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      case 'X':
+      {
+        internetON= 1;
+        cpuSerial = ' ';
+        if(ON_SIM && gsmConnect)
+        {
+          Respuesta = "{KAIDI" + String(numKaidi) + "X";
+          while((!msnSend) && (iterSMS < 5))
+          {
+            msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+            iterSMS++;
+
+          }
+          msnSend = false;
+          iterSMS = 0;
+          Respuesta = "";
+        }
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'x':
+      {
+        internetON = 0;
+        cpuSerial = ' ';
+        if(ON_SIM && gsmConnect)
+        {
+          Respuesta = "{KAIDI" + String(numKaidi) + "x";
+          while((!msnSend) && (iterSMS < 5))
+          {
+            msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+            iterSMS++;
+
+          }
+          msnSend = false;
+          iterSMS = 0;
+          Respuesta = "";
+        }
+        
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      
+      case 'S': //ACTIVACIÓN DEL RELAY
+      {
+        digitalWrite(pinRELE, LOW);
+        cpuSerial = ' ';
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      
+      case 's': //DESACTIVACIÓN DEL RELAY
+      {
+        digitalWrite(pinRELE, HIGH);
+        cpuSerial = ' ';
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      
+      case 'R': // PARA ACTIVAR LED RGB EN COLOR ROJO
+      {
+        colorWipe(pixel.Color(255, 0, 0), 20); // Red // Red
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'A': // PARA ACTIVAR LED RGB EN COLOR AMARILLO
+      {
+        colorWipe(pixel.Color(255, 162, 0), 20); // amarillo
+        cpuSerial = ' ';
+        onFunc = 1;    
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'V': // PARA ACTIVAR LED RGB EN COLOR VERDE
+      {
+        colorWipe(pixel.Color(0, 255, 0),20); // verde
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'B': // PARA ACTIVAR LED RGB EN COLOR AZUL
+      {
+        colorWipe(pixel.Color(0, 0, 255),20); //Azul
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+      
+      case 'N': // PARA ACTIVAR LED RGB EN COLOR NARANJA
+      {
+        colorWipe(pixel.Color(255, 69, 0),20); //Naranja
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'L': // PARA APAGAR LED RGB
+      {
+        pixel.clear();
+        pixel.show();
+        cpuSerial = ' ';
+        onFunc = 0;     
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'r': // PARA ACTIVAR LED RGB EN COLOR ROJO CON TITILEO DE 1 SEG
+      {
+        PRR1 &= 0xF7; // Instruccion para activar el TIMER3
+        temp3 = cpuSerial;
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'a': // PARA ACTIVAR LED RGB EN COLOR AMARILLO CON TITILEO DE 1 SEG
+      {
+        PRR1 &= 0xF7; // Instruccion para activar el TIMER3
+        temp3 = cpuSerial;
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'b': // PARA ACTIVAR LED RGB EN COLOR AZUL CON TITILEO DE 1 SEG
+      {
+        PRR1 &= 0xF7; // Instruccion para activar el TIMER3
+        temp3 = cpuSerial;
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+        
+      case 'n': // PARA ACTIVAR LED RGB EN COLOR NARANJA CON TITILEO DE 1 SEG
+      {
+        PRR1 &= 0xF7; // Instruccion para activar el TIMER3
+        temp3 = cpuSerial;
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+        
+      case 'v': // PARA ACTIVAR LED RGB EN COLOR VERDE CON TITILEO DE 1 SEG
+      {
+        PRR1 &= 0xF7; // Instruccion para activar el TIMER3
+        temp3 = cpuSerial;
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      case 'i': // DESACTIVAR TITILEO
+      {
+        PRR1 |= (1<<PRTIM3); // Instruccion para desactivar el TIMER3
+        pixel.clear();
+        pixel.show();
+        cpuSerial = ' ';
+        onFunc = 1;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+
+      default: //POR DEFECTO
+      {
+        delay(5);
+        cpuSerial = ' ';
+        //delay(1000);
+        //Serial.println("s7");
+        onFunc = 0;
+        OutputControl_Unit = Output::OutputS7;
+        break;
+      }
+  }
+
+
+}
+
+void funcS8()
+{
+  updateInput = 0;
+  Serial.print("*");
+  Serial.flush();
+  delay(500);
+  digitalWrite(pinRELE, HIGH);
+  //   delay(1000);
+  //  Serial.println("s8");
+
+  OutputControl_Unit = Output::OutputS8;
+}
+
+void funcS9() // S9 SDA
+{
+  updateInput = 0;
+  //   delay(1000);
+  //  Serial.println("s9");
+
+  OutputControl_Unit = Output::OutputS9;
+}
+
+void outputArduino()
+{
+  switch (OutputControl_Unit)
+  {
+    case 0:
+    {
+      
+      break;
+    }
+    case 1:
+    {
+
+
+
+      break;
+    }
+    case 2:
+    {
+      if(onCPU)
+      {
+        delay(100);
+        onTime++;
+        if(onTime >= 3000)
+        {
+          onTime = 0;
+          if (gsmConnect)
+          {
+            Respuesta = "{KAIDI" + String(numKaidi) + "e";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+            }
+          }
+          msnSend = false;
+          iterSMS = 0;
+
+          if(onCPUIter == 4)
+          {
+            onCPU = false;
+            onCPUIter++; 
+          }
+          onS0 = false;
+          processON++;
+          Respuesta = "";
+        }
+      }
+
+    break;
+    }
+    case 4:
+    {
+      //if(readS4 == 0)
+      //{
+      //  ONWindows = 0;
+      //}
+      
+      if(onGSM && ON_SIM && (readS4 == 1) && offWindows)
+      {
+        delay(100);
+        onTime++;
+        if(onTime >= 6000)
+        {
+          onTime = 0;
+          if (gsmConnect)
+          {
+            Respuesta = "{KAIDI" + String(numKaidi) + "M";
+            while((!msnSend) && (iterSMS < 5))
+            {
+              msnSend = SendingShortMessage(PhoneNumberKaidi,Respuesta);
+              iterSMS++;
+            }
+          }
+          msnSend = false;
+          iterSMS = 0;
+          offWindows = false;
+          Respuesta = "";
+        }
+      }
+      //delay(10);
+      break;
+    }
+    case 5:
+    {
+      break;
+    }
+    case 3:
+    {
+      readRx1 = 0;
+      break;
+    }
+    
+    case 7:
+    {
+      break;
+    }
+    
+    case 8:
+    {
+      TorniProx= 0;
+      break;
+    }
+    
+    case 9:
+    {
+      SDA_E = 0;
+      break;
+    }
+    
+    default: //POR DEFECTO
+    {
+      delay(10);
+      break;
+    }
+  }
+}
+
+void colorWipe(uint32_t color, int wait)
+{
+  for(int i=0; i<pixel.numPixels(); i++)
+  {
+    pixel.setPixelColor(i, color);
+    pixel.show();
+    delay(wait);
+  }
+}
+
+void theaterChase(uint32_t color, int wait)
+{
+  for(int a=0; a<10; a++)
+  {
+    for(int b=0; b<3; b++)
+    {
+      pixel.clear();
+      for(int c=b; c<pixel.numPixels(); c += 3)
+      {
+        pixel.setPixelColor(c, color);
+      }
+      pixel.show();
+      delay(wait);
+    }
+  }
+}
+
+void rainbow(int wait)
+{
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256)
+  {
+    pixel.rainbow(firstPixelHue);
+    pixel.show();
+    delay(wait);
+  }
+}
+
+void theaterChaseRainbow(int wait)
+{
+  int firstPixelHue = 0;
+  for(int a=0; a<30; a++)
+  {
+    for(int b=0; b<3; b++)
+    {
+      pixel.clear();
+      for(int c=b; c<pixel.numPixels(); c += 3)
+      {
+        int hue = firstPixelHue + c * 65536L / pixel.numPixels();
+        uint32_t color = pixel.gamma32(pixel.ColorHSV(hue));
+        pixel.setPixelColor(c, color);
+      }
+      pixel.show();
+      delay(wait);
+      firstPixelHue += 65536 / 90;
+    }
+  }
+}
+
+void ledInicio(int wait)
+{
+  int currentLED = 0; // LED actual en la secuencia
+  bool forward = true; // Dirección de la secuencia (avanzar o retroceder)
+  unsigned long startTime = millis(); // Tiempo actual en milisegundos
+  unsigned int timeStop = 16800;
+
+  while (millis() - startTime < timeStop) 
+  { // Ejecutar la secuencia durante 10 segundos
+      // Establecer el color para los LEDs activos
+    for (int i = 0; i < LED_COUNT; i++)
+    {
+      if (i <= currentLED)
+      {
+        pixel.setPixelColor(i, 0, 0, 170);
+      } else {
+        pixel.setPixelColor(i, 0, 0, 0);
+      }
+    }
+    pixel.show();
+
+      // Avanzar o retroceder en la secuencia
+    if (forward) 
+    {
+      currentLED++;
+      if (currentLED == LED_COUNT) {
+        forward = false;
+        currentLED = LED_COUNT - 2;
+      }
+      } else {
+        currentLED--;
+        if (currentLED == -1) {
+          forward = true;
+          currentLED = 1;
+        }
+      }
+
+      delay(wait);
+    }
+  pixel.clear();
+  pixel.show();
+}  
+
+
+
+void clearSerial1()
+{
+  while(Serial1.available() > 0)
+  {
+    char tempchar = Serial1.read();
+  }
+}
+void clearSerial()
+{
+  while(Serial.available() > 0)
+  {
+    char tempchar = Serial.read();
+  }
+}
+
+void SIM7600_PowerOn()
+{
+  Serial1.begin(BAUDRATE1);
+  delay(10);
+  clearSerial1();
+  SIM7600_AT_OK();
+  uint8_t tempe1 = sendATcommand("AT+CFUN=1", "OK", 5000);
+  uint8_t tempe2 = sendATcommand("AT+CGREG=1", "OK", 5000);
+  uint8_t tempe = sendATcommand("AT+CMGF=1", "OK", 5000);
+
+  clearSerial1();
+}
+
+
+void SIM7600_AT_OK()
+{
+  uint8_t answer = 0;
+  for (uint8_t iter = 0; iter < MAX_ITERATIONS && answer == 0; iter++)
+  {
+    answer = sendATcommand("AT", "OK", 5000);
+  }
+  if (answer == 1) 
+  {
+    ON_SIM = true;
+  }
+}
+
+bool SendingShortMessage(String PhoneNumber, String Message)
+{
+  const unsigned long SEND_MESSAGE_TIMEOUT_MS = 5000;
+  uint8_t answer = 0;
+  uint8_t i = 0;
+  bool retorno = false;
+  String aux_string;
+  aux_string = "AT+CMGS=\""+ PhoneNumber+"\"";
+  size_t len = Message.length();
+  answer = sendATcommand(aux_string, ">", SEND_MESSAGE_TIMEOUT_MS);
+  if (answer == 1)
+  {
+    Serial1.write(Message.c_str(), len);
+    Serial1.flush();
+    Serial1.write(0x1A);
+    Serial1.flush();
+    answer = sendATcommand("", "OK", SEND_MESSAGE_TIMEOUT_MS);
+    if (answer == 1)
+    {
+      retorno = true; 
+    }
+  }
+  return retorno;
+}
+
+uint8_t sendATcommand(String command, String expectedResponse, unsigned int timeout)
+{
+  // Check if command is empty or doesn't start with "AT"
+  String response = "";
+  String commandTemp = "";
+  String expectedResponseTemp = "";
+  unsigned int timeoutTemp = 0;
+  char tempClean;
+
+  commandTemp = command;
+  expectedResponseTemp = expectedResponse;
+  timeoutTemp = timeout;
+
+
+  size_t len = commandTemp.length();
+  if ((len > 0) && (commandTemp.indexOf("AT") != -1))
+  {
+    // Clear serial buffer
+    while (Serial1.available())
+    {
+      tempClean = Serial1.read();
+    }
+    // Send AT command
+    
+    Serial1.write(commandTemp.c_str(),len);
+    Serial1.flush();
+    Serial1.write("\r\n");
+    Serial1.flush();
+  }
+  // Wait for response or timeout
+  
+  
+  unsigned long start_time = millis();
+  while (millis() - start_time < timeoutTemp)
+  {
+    if (Serial1.available())
+    {
+      char c = Serial1.read();
+      response += c;
+      if (response.indexOf(expectedResponseTemp) != -1) 
+      {
+        return 1;
+      }
+    }
+    //delay(1);
+  }
+  while (Serial1.available())
+  {
+     tempClean = Serial1.read();
+  }
+  //delay(1000);
+  //Serial.println(response);
+  // Response not received before timeout
+  return 0;
+}
+
+bool ReceivingShortMessage()
+{
+  unsigned int timeout = 3000; 
+  bool messageReceived = false; 
+  bool answer = false;
+  bool answer2 = false;
+  uint8_t answer2T = 0 ;
+  unsigned int tempMS = 0;
+  int startIndex = 0;
+  int endIndex = 0;
+  uint8_t k = 0, l = 0;
+  char ct1;
+  unsigned long startTime = 0;
+  //char response1[64];
+  size_t len = 0;
+
+
+  String response = "";
+  String tempString = "";
+  String command = "";
+  String kaidiNum = "";
+ //memset(response1, '\0', sizeof(response1));
+
+  kaidiNum = "{KAIDI" + String(numKaidi);
+//  while (Serial1.available())
+//  {
+//    char ct = Serial1.read();
+//  }
+/*
+  Serial1.write("at+cpms? \r\n");
+  Serial1.flush();
+  
+  startTime = millis(); 
+  while (((millis() - startTime) < timeout) && (answer != true))
+  {
+    if (Serial1.available() > 0) 
+    {
+      ct1 = Serial1.read();
+      response += ct1; 
+      if (response.indexOf("OK") != -1) 
+      { 
+        startIndex = response.indexOf("\"SM\",") + 5;
+        endIndex = response.indexOf(",", startIndex);
+        String tempString = "";
+        tempString = response.substring(startIndex, endIndex);
+        tempMS = tempString.toInt();
+        answer = true;
+      }
+    }
+  }
+  answer = false;
+  response = "";
+
+  while (Serial1.available())
+  {
+    char ct4 = Serial1.read();
+  }
+
+  //Serial.print('I');
+ // Serial.print(tempMS);
+   answer = false;
+*/
+
+  for (unsigned int i = 0; i < 20; i++)
+  {
+    command = "AT+CMGRD=" + String(i);
+
+    len = command.length();
+    Serial1.write(command.c_str(),len);
+    Serial1.flush();
+    Serial1.write("\r\n");
+    Serial1.flush();
+    // Serial1.write("\r\n");
+    // Serial1.flush();
+    delay(1);
+    response = "";
+    answer = false;
+    startTime = millis(); 
+    while ((millis() - startTime) < timeout && (answer != true)) 
+    {
+      if (Serial1.available() > 0)
+      {
+        char ct2 = Serial1.read(); 
+        //delay(1);
+        response += ct2; 
+        if(response.indexOf("OK") != -1) 
+        {
+          if(response.indexOf(kaidiNum) != -1) 
+          {
+            startIndex = response.indexOf(kaidiNum) + 8;
+            commandGSM[k]= response.charAt(startIndex);
+            
+           // Serial.println(commandGSM[k]);
+            
+            
+            k++;
+            if(k == 3)
+            {
+              k = 0;
+            }
+            answer2 = true;
+            answer = true;
+          }
+        }
+      } 
+    }
+   // Serial.println(command);
+    while (Serial1.available())
+    {
+      ct1 = Serial1.read();
+    }
+
+  }
+  command = "";
+  command = "AT+CMGD=,4";
+  uint8_t answer3T = sendATcommand(command,"OK",timeout);
+
+
+/*  for (unsigned int i = 0; i < 10; i++)
+  {
+    command = "AT+CMGD=" + String(i) + ",0";
+
+    answer2T = sendATcommand(command,"OK",timeout);
+    //Serial1.write(command.c_str());
+    //Serial1.flush();
+    delay(1);
+
+  //     answer2T = false;
+  //     response = "";
+  //     startTime = millis(); 
+  //     while ((millis() - startTime) < timeout && (answer2T != true)) 
+  //     {
+  //       if (Serial1.available() > 0)
+  //       {
+  //         char ct3 = Serial1.read();
+  //         response += ct3;
+  //         if(response.indexOf("OK") != -1) 
+  //         {
+  // //         Serial.println("z");
+  // //         Serial.println(response);
+  //           answer2T = true;
+  //         }
+  //       }
+      
+  //     }
+  }
+  */
+
+  //while (Serial1.available())
+  //{
+  //  char ct5 = Serial1.read();
+  //}
+    //command = "AT+CMGD=" + String(i) + ",0\r\n";
+    // command = "AT+CMGD=,4 ";
+    // Serial1.write(command.c_str());
+    // Serial1.flush();
+    // Serial1.write("\r\n");
+    // Serial1.flush();
+    // answer2T = sendATcommand("", "OK", 1000);
+
+    // Serial.println("B");
+    // Serial.println(command);
+    // Serial.println("C");
+    // Serial.println(answer2T );
+
+
+
+    // if(answer)
+    // {
+    //   Serial.println("eee");
+    //   Serial1.flush();
+    //   Serial.println(commandGSM[0]);
+    //   Serial1.flush();
+    //   Serial.println(commandGSM[1]);
+    //   Serial1.flush();
+    //   Serial.println(commandGSM[2]);
+    // }
+    
+  return answer2; 
+}
+
+// INTERRUPCION CUANDO SE UTILIZA EL TITILEO EN EL RBG
+ISR(TIMER3_OVF_vect)
+{
+  TCNT3 = 0xC2F7;
+  switch (temp3)
+  {
+    case 'r':
+    {
+      if (!estado_Inter)
+      {
+        colorWipe(pixel.Color(255, 0, 0), 1); // Red
+        estado_Inter = true;
+      }
+      else
+      {
+        pixel.clear();
+        pixel.show();
+        estado_Inter = false;
+      }
+      break;
+    }
+
+    case 'b':
+    {
+      if (!estado_Inter)
+      {
+        colorWipe(pixel.Color(0, 0, 255),1); //Azul
+        estado_Inter = true;
+      }
+      else
+      {
+        pixel.clear();
+        pixel.show();
+        estado_Inter = false;
+      }
+      break;
+    }
+
+    case 'n':
+    {
+      if (!estado_Inter)
+      {
+        colorWipe(pixel.Color(255, 69, 0),1); //Naranja
+        estado_Inter = true;
+      }
+      else
+      {
+        pixel.clear();
+        pixel.show();
+        estado_Inter = false;
+      }
+      break;
+    }
+
+    case 'a':
+    {
+      if (!estado_Inter)
+      {
+        colorWipe(pixel.Color(255, 162, 0), 1); // Amarillo
+        // pixel.setPixelColor(0, pixel.Color(255, 200, 0));//Amarillo
+        estado_Inter = true;
+      }
+      else
+      {
+        pixel.clear();
+        pixel.show();
+        estado_Inter = false;
+      }
+      break;
+    }
+
+    case 'v':
+    {
+      if (!estado_Inter)
+      {
+        colorWipe(pixel.Color(0, 255, 0), 1); //Verde
+        //pixel.setPixelColor(0, pixel.Color(0, 255, 0));//Verde
+        estado_Inter = true;
+      }
+      else
+      {
+        pixel.clear();
+        pixel.show();
+        estado_Inter = false;
+      }
+      break;
+    }
+    
+    default:
+    {
+      //sal_msg= 0xFF;
+      break;
+    }
+  }
+}
