@@ -87,27 +87,54 @@
             <h1 class="text-center">Taller Formularios HTML </h1>
             <hr style="width: 90%;">
             <form>
-                <p>Asignatura:</p>
-                <label><input type="radio" name="asignatura" value="asignaturalengua"> Lengua</label><br>
-                <label><input type="radio" name="asignatura" value="asignaturamatematicas"> Matemáticas</label><br>
+                <p>Ciclo:</p>
+                <label><input type="radio" name="ciclo" value="ciclosmir"> SMIR</label><br>
+                <label><input type="radio" name="ciclo" value="cicloasir"> ASIR</label><br>
+                <label><input type="radio" name="ciclo" value="ciclodam"> DAM</label><br>
+                <label><input type="radio" name="ciclo" value="ciclodaw"> DAW</label><br>
+                
+                <p>Fecha:</p>
+                <input type="date"><br>
+                
+                <p>Texto 1:</p>
+                <textarea rows="8" cols="57">Inserte aquí el texto</textarea><br>
+                
+                <p>Hora:</p>
+                <input type="time"><br>
+                
+                <p>Asignaturas:</p>
+                <label><input type="checkbox" name="asignatura" value="asignaturageografia"> Geografía</label><br>
+                <label><input type="checkbox" name="asignatura" value="asignaturalengua"> Lengua</label><br>
+                <label><input type="checkbox" name="asignatura" value="asignaturamatematicas"> Matemáticas</label><br>
+                <label><input type="checkbox" name="asignatura" value="asignaturahistoria"> Historia</label><br>
+                
+                <p>Color:</p>
+                <input type="color"><br>
+                
+                <p>Texto 2:</p>
+                <textarea rows="8" cols="57">Inserte aquí el texto</textarea><br>
+                
+                <p>Asignatura favorita:</p>
                 <label><input type="radio" name="asignatura" value="asignaturahistoria"> Historia</label><br>
                 <label><input type="radio" name="asignatura" value="asignaturageografia"> Geografía</label><br>
+                <label><input type="radio" name="asignatura" value="asignaturalengua"> Lengua</label><br>
+                <label><input type="radio" name="asignatura" value="asignaturamatematicas"> Matemáticas</label><br>
                 
-                <p>Editor de texto:</p>
-                <label><input type="checkbox" name="editor" value="editornotepad"> Notepad</label><br>
-                <label><input type="checkbox" name="editor" value="editoremacs"> Emacs</label><br>
-                <label><input type="checkbox" name="editor" value="editorotro"> Otro</label><br>
-                
-                <p>Comentarios:</p>
-                <textarea rows="5" cols="59">Escriba aquí, por favor</textarea><br>
-                
-                <p>Procesador:</p>
-                <select name="procesador">
-                    <option value="amd">AMD</option>
-                    <option value="intel_i5">Intel i5</option>
-                    <option value="intel_i7">Intel i7</option>
-                    <option value="intel_i9">Intel i9</option>
+                <p>Escritorio:</p>
+                <select name="escritorio" multiple>
+                    <option value="kde">KDE</option>
+                    <option value="gnome">GNOME</option>
+                    <option value="unity">Unity</option>
                 </select><br>
+                
+                <p>Nombre:</p>
+                <input type="text" name="nombre"><br>
+                
+                <p>Apellidos:</p>
+                <input type="text" name="apellidos"><br>
+                
+                <p>Teléfono:</p>
+                <input type="text" name="teléfono"><br>
                 
                 <input type="submit" value="Enviar">
             </form>
