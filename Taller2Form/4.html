@@ -31,7 +31,7 @@
         }
 
         form {
-            width: 50%;
+            width: 70%;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
@@ -73,6 +73,27 @@
         input[type="submit"]:hover {
             background-color: #2980b9;
         }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 40px solid red;
+            position: absolute;
+            left: 9.5%;
+            top: 10%;
+            animation: bounce 2s infinite;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(-50%);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-50%) translateY(-10px);
+            }
+        }
     </style>
 </head>
 
@@ -88,7 +109,7 @@
             <hr style="width: 90%;">
             <form>
                 <p>Texto:</p>
-                <textarea rows="4" cols="52">Utilice este cuadro para escribir</textarea><br>
+                <textarea rows="4" cols="52" style="width: 98%;">Utilice este cuadro para escribir</textarea><br>
                 
                 <p>Fecha:</p>
                 <input type="date"><br>
@@ -123,6 +144,7 @@
                 <input type="submit" value="Enviar">
             </form>
             <br><br>
+            <div class="arrow"></div>
 
         </div>
 

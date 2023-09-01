@@ -31,7 +31,7 @@
         }
 
         form {
-            width: 50%;
+            width: 70%;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
@@ -73,6 +73,27 @@
         input[type="submit"]:hover {
             background-color: #2980b9;
         }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 40px solid red;
+            position: absolute;
+            left: 9.5%;
+            top: 10%;
+            animation: bounce 2s infinite;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(-50%);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-50%) translateY(-10px);
+            }
+        }
     </style>
 </head>
 
@@ -103,7 +124,7 @@
                 <input type="color"><br>
                 
                 <p>Texto:</p>
-                <textarea rows="6" cols="49">Por favor, escriba aquí</textarea><br>
+                <textarea rows="6" cols="49" style="width: 98%;">Por favor, escriba aquí</textarea><br>
                 
                 <p>Procesador:</p>
                 <label><input type="checkbox" name="procesador" value="procesadoramd"> AMD</label><br>
@@ -136,11 +157,12 @@
                 <input type="file"><br>
                 
                 <p>Texto 2:</p>
-                <textarea rows="8" cols="49">Inserte aquí el texto</textarea><br>
+                <textarea rows="8" cols="49"style="width: 98%;">Inserte aquí el texto</textarea><br>
                 
                 <input type="submit" value="Enviar">
             </form>
             <br><br>
+            <div class="arrow"></div>
 
         </div>
 
