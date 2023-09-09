@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ejercicio de selectores</title>
+    <style type="text/css">
+        /* Todos los elementos de la pagina */
+
+        * {
+            font: 1em/1.3 Arial, Helvetica, sans-serif;
+        }
+
+        /* Todos los parrafos de la pagina */
+
+        p {
+            color: #555;
+        }
+
+        /* Todos los párrafos contenidos en #primero */
+        #primero>p {
+
+            color: #336699;
+        }
+
+        /* Todos los enlaces la pagina */
+        a {
+            color: #CC3300;
+        }
+
+        /* Los elementos "em" contenidos en #primero */
+        #primero>em {
+            background: #FFFFCC;
+            padding: .1em;
+        }
+
+        /* Todos los elementos "em" de clase "especial" en toda la pagina */
+        em.especial {
+            background: #FFCC99;
+            border: 1px solid #FF9900;
+            padding: .1em;
+        }
+
+        /* Elementos "span" contenidos en .normal */
+        .normal>span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="primero">
+        <p>Colombia:
+            <em class="especial">Iglesia lanza encuentros online</em>,
+            sobre la convivencia en
+            <a href="#">la pandemia</a>.
+        </p>
+
+        <p>La Conferencia de Religiosos de Colombia (CRC) y
+            <a href="#">la Comisión de Justicia y Paz</a>.
+            con el apoyo de Pax Christi y la Confederación de Religiosos de América Latina
+            y el Caribe (CLAR), organizaron cuatro conferencias en línea,
+            a través de la plataforma digital MEET,
+            <em>los días 22 y 29 de julio y 5 y 12 de agosto, de 4:00 p.m.
+                a 5:30 p.m (hora local)</em>,
+            para abordar el tema de la convivencia, de la relación
+            afectiva que viven las familias, en esta época de pandemia.
+        </p>
+    </div>
+
+
+    <div class="normal">
+        <p>Estos encuentros, que contarán con la ayuda de expertos en
+            la resolución de conflictos personales y familiares
+            en la problemática causada por
+            <span><a href="#">la drogadicción</a>
+                y en la promoción de la salud y el desarrollo humano</span>
+            -las psicólogas Carolina Vanegas y Claudia Patricia Siabato,
+            y la educadora Claudia Yulieth León-
+            ayudarán a enfrentar este difícil momento que
+            el mundo está atravesando de una manera
+            más agradable y a aceptar esta
+            <a href="#">realidad como un desafío</a>,
+            y una oportunidad para la reunificación con la familia y la comunidad.
+        </p>
+
+        <p>"Los tiempos que vivimos
+            <em class="especial">-dice el comunicado emitido por las instituciones
+                organizadoras en la página web del Episcopado- </em>
+            representan un desafío para la convivencia,
+            ya que además de la amenaza de Covid-19, las condiciones de movilidad
+            y encierro limitados permiten pasar más tiempo juntos en familia.
+            Este 'estar juntos' puede ser una oportunidad para manifestar la
+            violencia latente en el tejido familiar, pero también puede ser
+            una oportunidad para fortalecer el tejido de las relaciones y
+            el cuidado de los demás".
+        </p>
+
+    </div>
+
+</body>
+
+</html>
