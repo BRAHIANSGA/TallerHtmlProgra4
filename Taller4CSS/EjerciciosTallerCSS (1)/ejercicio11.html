@@ -1,44 +1,99 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Ejercicio formatear tabla</title>
+    <title>Ejercicio formatear tabla</title>
+    <style>
+        th,
+        td {
+            text-align: left;
+            border: 1px solid #333;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-left: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        th {
+            background-color:#E6F3FF;
+            color: white;
+        }
+        tr{
+            background-image: url(./imagenes/fondo_gris.gif);
+            
+            background-repeat: no-repeat;
+         
+            background-position: left center; 
+        }
+
+        #euro {
+            background-image: url(./imagenes/euro.png);
+            
+            background-repeat: no-repeat;
+         
+            background-position: left center;
+        }
+        #dollar{
+            background-image: url(./imagenes/dolar.png );
+            
+            background-repeat: no-repeat;
+         
+            background-position: left center;
+        }
+        #libra{
+            background-image: url(./imagenes/libra.png );
+            
+            background-repeat: no-repeat;
+         
+            background-position: left center;
+        }
+        #euroY{
+            background-image: url(./imagenes/yen.png );
+            
+            background-repeat: no-repeat;
+         
+            background-position: left center;
+        }
+    </style>
+
 <body>
-<table border="1" summary="Tipos de cambio">
-<tr>
-<th scope="col">Cambio</th>
-<th scope="col">Compra</th>
-<th scope="col">Venta</th>
-<th scope="col">M&aacute;ximo</th>
-<th scope="col">M&iacute;nimo</th>
-</tr>
-<tr>
-<th scope="row">Euro/Dolar</th>
-<td>1.2524</td>
-<td>1.2527</td>
-<td>1.2539</td>
-<td>1.2488</td>
-</tr>
-<tr>
-<th scope="row">Dolar/Yen</th>
-<td>119.01</td>
-<td>119.05</td>
-<td>119.82</td>
-<td>119.82</td>
-</tr>
-<tr>
-<th scope="row">Libra/Dolar</th>
-<td>1.8606</td>
-<td>1.8611</td>
-<td>1.8651</td>
-<td>1.8522</td>
-</tr>
-<tr>
-<th scope="row">Euro/Yen</th>
-<td>149.09</td>
-<td>149.13</td>
-<td>149.79</td>
-<td>148.96</td>
-</tr>
-</table>
+    <table border="1" summary="Tipos de cambio">
+        <tr id="cabeceras">
+            <th scope="col">Cambio</th>
+            <th scope="col">Compra</th>
+            <th scope="col">Venta</th>
+            <th scope="col">M&aacute;ximo</th>
+            <th scope="col">M&iacute;nimo</th>
+        </tr>
+        <tr>
+            <th scope="row" id="euro">Euro/Dolar</th>
+            <td>1.2524</td>
+            <td>1.2527</td>
+            <td>1.2539</td>
+            <td>1.2488</td>
+        </tr>
+        <tr>
+            <th scope="row" id="dollar">Dolar/Yen</th>
+            <td>119.01</td>
+            <td>119.05</td>
+            <td>119.82</td>
+            <td>119.82</td>
+        </tr>
+        <tr>
+            <th scope="row" id="libra">Libra/Dolar</th>
+            <td>1.8606</td>
+            <td>1.8611</td>
+            <td>1.8651</td>
+            <td>1.8522</td>
+        </tr>
+        <tr>
+            <th scope="row" id=euroY>Euro/Yen</th>
+            <td>149.09</td>
+            <td>149.13</td>
+            <td>149.79</td>
+            <td>148.96</td>
+        </tr>
+    </table>
 </body>
+
 </html>

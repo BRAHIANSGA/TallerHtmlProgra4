@@ -1,0 +1,238 @@
+ul,
+ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+/*Punto 7 configuraciones */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 0.9em;
+    color: #000;
+    /* Código de color negro */
+    line-height: 1.4;
+}
+
+.articulo a {
+    color: #CC6600;
+
+}
+
+.articulo p {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+
+}
+
+#publicidad {
+    color: #555;
+}
+
+.articulo img {
+
+    float: left;
+    margin-right: 10px;
+
+}
+
+#publicidad a {
+    color: #CC6600;
+}
+
+#noticias h3 {
+    color: #003366;
+}
+
+#lateral {
+    font-size: 0.9em;
+
+}
+
+#noticias .fecha {
+    display: block;
+    /* fecha ocupe toda su línea */
+    color: #999;
+
+}
+
+#menu {
+
+    margin-right: 1em;
+}
+
+#menu a {
+
+    color: #fff;
+
+    font-size: 1.3em;
+}
+#menu li{
+    margin-left: 1em;
+}
+h2{
+    color: white;
+}
+.articulo h2 {
+    color: #CC6600;
+    font-size: 1.6em;
+
+    line-height: 1.2;
+
+    margin-bottom: 0.3em;
+
+}
+
+/*FIN DE CONFIGURACION PUNTO 7 ---------------------------------------------------------------------------------------*/
+h1,
+h2,
+h3,
+p,
+form {
+    margin: 0;
+    padding: 0
+}
+
+.clear {
+    clear: both
+}
+
+img {
+    border: none
+}
+
+#contenedor {
+    width: 90%;
+    max-width: 900px;
+    /* width: expression(document.body.clientWidth > 901? "900px":"auto");*/
+    margin: 0 auto;
+}
+
+
+
+#cabecera {
+    clear: both;
+    /*El elemento #cabecera debe tener un relleno de 1em en todos los lados.*/
+    padding: 1em;
+    /*Punto 3.1*/
+}
+
+#cabecera h1 {
+    background-image: url(./../imagenes/logo.gif);
+    color: transparent;
+    background-repeat: no-repeat;
+    background-size: auto;
+    padding: 0.2em;
+
+}
+
+#menu {
+
+    clear: both;
+    /*El elemento #menu debe tener un relleno de 0.5em en todos los lados y un margen inferior de 0.5em.*/
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #004C99;
+}
+
+#lateral {
+    float: left;
+    width: 20%
+}
+
+#contenido {
+    float: right;
+    width: 78%
+}
+
+#contenido #principal {
+
+    float: left;
+    width: 74%
+}
+
+#contenido #secundario {
+    float: right;
+    width: 20%
+}
+
+/*El resto de elementos (#noticias, #publicidad, #principal, #secundario) deben tener
+0.5em de relleno en todos sus lados, salvo el elemento #pie, que sólo debe tener
+relleno en la zona superior e inferior.*/
+
+#publicidad,
+#principal {
+    padding: 0.5em;
+}
+
+#noticias {
+    border: 1px solid #C5C5C5;
+    background-color: #F8F8F8;
+}
+
+#secundario {
+    padding: 0.5em;
+    border: 1px solid #CC6600;
+}
+
+#secundario>h2 {
+    background-color: #DB905C;
+    padding: 0.2em;
+}
+
+#pie {
+    clear: both;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-top: 1em;
+    border-top: 1px solid #C5C5C5;
+    border-bottom: 1px solid #C5C5C5;
+    background-color: #F8F8F8;
+}
+
+/* Separación entre elementos .articulo de 1em */
+.articulo {
+    margin-bottom: 1em;
+}
+
+/* Margen de 0.5em en todas las imágenes dentro de .articulo */
+.articulo img {
+    margin: 0.5em;
+}
+
+/* Separación de 1em en la parte superior de #publicidad */
+#publicidad {
+    margin-top: 1em;
+    border: 1px dashed #CC6600;
+    background-color: #FFF6CD;
+}
+
+#cabecera #logo {
+    float: left
+}
+
+#cabecera #buscador {
+    float: right
+}
+
+#menu {
+    background-image: url(../imagenes/fondo_menu.gif);
+}
+
+#menu ul#menu_principal li {
+    display: inline;
+    float: left
+}
+
+#contenido #principal .articulo img {
+    width: 100px;
+    flat: left
+}
+
+#pie .enlaces {
+    float: left
+}
+
+#pie .copyright {
+    float: right
+}
