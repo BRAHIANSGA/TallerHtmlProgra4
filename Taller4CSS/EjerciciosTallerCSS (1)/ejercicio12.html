@@ -13,32 +13,104 @@
             font-family: Verdana, Arial, sans-serif;
             color: #192666;
             background-image: url(./imagenes/imagenesejercicio12/fondo.gif );
+            background-repeat: no-repeat;
             background-color: #F2F5FE;
             background-repeat: repeat;
-            
+
         }
+
         #contenedor {
-            width: 770px; 
-            margin: 0 auto; 
-            text-align: left; 
+            width: 770px;
+            margin: 0 auto;
+            text-align: left;
         }
+
         #cabecera {
             color: white;
             height: 100px;
             background-image: url(./imagenes/imagenesejercicio12/cabecera.jpg);
-          
+            background-repeat: no-repeat;
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background-color: #ccc;
+
+            padding: 10px;
+            width: 530px;
+
         }
-        #cabecera>a{
+
+        #buscador {
+            margin: 0;
+        }
+
+        #logo {
+            margin: 0;
+        }
+
+        #logo a {
             color: white;
         }
-        #principal{
+
+        #menu {
+            display: flex;
+        }
+
+        #principal {
             width: 530px;
         }
 
-        #pie{
+        #pie {
             width: 530px;
         }
-       
+
+        #menu {
+            text-align: center;
+            /* Centrar horizontalmente el menú */
+        }
+
+        #menu ul {
+            list-style-type: none;
+            /* Eliminar viñetas de lista */
+            padding: 0;
+            /* Eliminar relleno predeterminado */
+        }
+
+        #menu ul li {
+            display: inline-block;
+            /* Mostrar elementos en línea */
+            margin-right: 10px;
+            /* Espaciado entre elementos (ajusta según sea necesario) */
+        }
+
+        #menu ul li:last-child {
+            margin-right: 0;
+            /* Eliminar el margen derecho del último elemento */
+        }
+
+        .clear {
+            clear: both;
+            /* Limpiar flotadores si es necesario */
+        }
+
+        #contenido {
+            display: flex;
+            justify-content: space-between;
+            /* Alinea los elementos a ambos lados (izquierda y derecha) */
+        }
+
+        #principal {
+            width: 66%;
+            /* El contenido principal ocupará el 66% del espacio disponible */
+        }
+
+        #secundario {
+            width: 30%;
+            /* El contenido secundario ocupará el 30% del espacio disponible */
+        }
     </style>
 </head>
 
@@ -59,7 +131,8 @@
                     </fieldset>
                 </form>
             </div>
-            <div class="clear"></div>
+
+
         </div>
 
         <div id="menu">
