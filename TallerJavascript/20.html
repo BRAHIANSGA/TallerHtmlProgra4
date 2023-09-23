@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora</title>
+  <style>
+    /* Estilo para la calculadora */
+    .calculator {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para los cuadros de texto y botones */
+    input, button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <input type="number" id="numero1" placeholder="Primer número">
+  <input type="number" id="numero2" placeholder="Segundo número">
+  <button onclick="realizarOperaciones()">Calcular</button>
+  <br>
+  <p id="resultado"></p>
+</div>
+
+<script>
+  function realizarOperaciones() {
+    var numero1 = parseFloat(document.getElementById('numero1').value);
+    var numero2 = parseFloat(document.getElementById('numero2').value);
+
+    if (isNaN(numero1) || isNaN(numero2)) {
+      mostrarResultado('Por favor, ingresa números válidos.');
+      return;
+    }
+
+    var resultado = '';
+
+    resultado += 'Suma: ' + (numero1 + numero2) + '<br>';
+    resultado += 'Resta: ' + (numero1 - numero2) + '<br>';
+    resultado += 'Multiplicación: ' + (numero1 * numero2) + '<br>';
+
+    if (numero2 !== 0) {
+      resultado += 'División: ' + (numero1 / numero2) + '<br>';
+    } else {
+      resultado += 'División: No se puede dividir por 0<br>';
+    }
+
+    resultado += 'Potenciación: ' + Math.pow(numero1, numero2) + '<br>';
+
+    if (numero2 >= 0) {
+      resultado += 'Radicación: ' + Math.pow(numero1, 1 / numero2) + '<br>';
+    } else {
+      resultado += 'Radicación: No se puede calcular con un exponente negativo<br>';
+    }
+
+    if (numero1 > 0 && numero2 > 0) {
+      resultado += 'Logaritmo: ' + Math.log(numero1) / Math.log(numero2) + '<br>';
+    } else {
+      resultado += 'Logaritmo: No se puede calcular con números no positivos<br>';
+    }
+
+    mostrarResultado(resultado);
+  }
+
+  function mostrarResultado(resultado) {
+    var resultadoDiv = document.getElementById('resultado');
+    resultadoDiv.innerHTML = resultado;
+  }
+</script>
+
+</body>
+</html>

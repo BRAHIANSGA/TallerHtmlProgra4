@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Seguimiento de Coordenadas y Teclas</title>
+</head>
+<body>
+
+<div id="coordenadas"></div>
+<div id="teclaPresionada"></div>
+
+<script>
+  // Función para mostrar las coordenadas del ratón
+  function mostrarCoordenadas(event) {
+    var coordenadasDiv = document.getElementById('coordenadas');
+    coordenadasDiv.innerHTML = 'Coordenadas del ratón: X=' + event.clientX + ', Y=' + event.clientY;
+  }
+
+  // Función para mostrar la tecla presionada y su código Unicode
+  function mostrarTecla(event) {
+    var teclaDiv = document.getElementById('teclaPresionada');
+    teclaDiv.innerHTML = 'Tecla presionada: ' + event.key + ' (Código Unicode: ' + event.keyCode + ')';
+  }
+
+  // Capturar eventos de movimiento del ratón
+  document.addEventListener('mousemove', mostrarCoordenadas);
+
+  // Capturar eventos de teclado
+  document.addEventListener('keydown', mostrarTecla);
+</script>
+
+</body>
+</html>

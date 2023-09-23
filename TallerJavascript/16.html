@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Posición del Clic en la Pantalla</title>
+</head>
+<body>
+
+<button onclick="mostrarPosicion(event)">Haz clic aquí</button>
+
+<script>
+  function mostrarPosicion(event) {
+    var posicionVertical = event.clientY < window.innerHeight / 2 ? 'arriba' : 'abajo';
+    var posicionHorizontal = event.clientX < window.innerWidth / 2 ? 'izquierda' : 'derecha';
+
+    alert('Posición vertical: ' + posicionVertical + '\nPosición horizontal: ' + posicionHorizontal);
+  }
+</script>
+
+</body>
+</html>

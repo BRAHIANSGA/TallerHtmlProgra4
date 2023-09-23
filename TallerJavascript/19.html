@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tooltip al pasar por encima de un enlace</title>
+  <style>
+    /* Estilo para el tooltip */
+    .tooltip {
+      position: absolute;
+      display: none;
+      background-color: #000;
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<a href="#" onmouseover="mostrarTooltip(this)" onmouseout="ocultarTooltip()">Pasa el ratón aquí</a>
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+  function mostrarTooltip(enlace) {
+    var tooltip = document.getElementById('tooltip');
+    tooltip.innerText = enlace.innerText;
+    tooltip.style.display = 'block';
+    tooltip.style.top = (enlace.offsetTop + enlace.offsetHeight) + 'px';
+    tooltip.style.left = enlace.offsetLeft + 'px';
+  }
+
+  function ocultarTooltip() {
+    var tooltip = document.getElementById('tooltip');
+    tooltip.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

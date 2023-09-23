@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Límite de Caracteres en Textarea</title>
+</head>
+<body>
+
+<textarea id="miTextarea" rows="4" cols="50" maxlength="100" oninput="limitarCaracteres()"></textarea>
+
+<script>
+  function limitarCaracteres() {
+    var textarea = document.getElementById('miTextarea');
+    var maxLength = parseInt(textarea.getAttribute('maxlength'));
+
+    if (textarea.value.length > maxLength) {
+      textarea.value = textarea.value.substring(0, maxLength);
+    }
+  }
+</script>
+
+</body>
+</html>

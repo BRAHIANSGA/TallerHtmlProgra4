@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Selección de Fecha con Calendario</title>
+  <style>
+    /* Estilo para el calendario */
+    #calendario {
+      display: none;
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+<input type="text" id="fechaInput" placeholder="Seleccione una fecha" readonly onclick="mostrarCalendario()">
+<div id="calendario"></div>
+<p id="fechaSeleccionada"></p>
+
+<script>
+  function mostrarCalendario() {
+    var calendario = document.getElementById('calendario');
+    calendario.style.display = 'block';
+    calendario.innerHTML = '<input type="date" id="calendarioInput" onchange="seleccionarFecha()">';
+
+    // Posicionar el calendario cerca del input
+    var fechaInput = document.getElementById('fechaInput');
+    calendario.style.top = (fechaInput.offsetTop + fechaInput.offsetHeight) + 'px';
+    calendario.style.left = fechaInput.offsetLeft + 'px';
+  }
+
+  function seleccionarFecha() {
+    var calendarioInput = document.getElementById('calendarioInput');
+    var fechaSeleccionada = calendarioInput.value;
+
+    var fechaP = document.getElementById('fechaSeleccionada');
+    fechaP.innerText = 'Fecha seleccionada: ' + fechaSeleccionada;
+
+    var calendario = document.getElementById('calendario');
+    calendario.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
