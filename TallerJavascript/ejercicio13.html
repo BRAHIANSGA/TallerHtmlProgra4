@@ -5,24 +5,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Ejercicio 13 - DOM básico y atributos XHTML</title>
+  <script src="js/13.js"></script>
 
-
-  <script>
-    function anade() {
-      var lista = document.getElementById('lista');
-
-      // Crear dos nuevos elementos li
-      var nuevoElemento1 = document.createElement('li');
-      nuevoElemento1.appendChild(document.createTextNode('Nuevo elemento 1'));
-
-      var nuevoElemento2 = document.createElement('li');
-      nuevoElemento2.appendChild(document.createTextNode('Nuevo elemento 2'));
-
-      // Añadir los nuevos elementos a la lista
-      lista.appendChild(nuevoElemento1);
-      lista.appendChild(nuevoElemento2);
-    }
-  </script>
 
 </head>
 
@@ -36,7 +20,7 @@
     <li>Maecenas nisl arcu</li>
   </ul>
 
-  <input type="button" value="Añadir elemento" onclick="anade();">
+  <input type="button" value="Añadir elemento" onclick="añadeItems();">
 
 </body>
 

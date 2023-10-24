@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Límite de Caracteres en Textarea</title>
 </head>
+
 <body>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <textarea id="miTextarea" rows="4" cols="50" maxlength="100" oninput="limitarCaracteres()"></textarea><br><br>
+    <label id="contador"></label>
+  </div>
 
-<textarea id="miTextarea" rows="4" cols="50" maxlength="100" oninput="limitarCaracteres()"></textarea>
+  <script>
+    function limitarCaracteres() {
+      let textarea = document.getElementById('miTextarea');
+      let maxLength = parseInt(textarea.getAttribute('maxlength'));
 
-<script>
-  function limitarCaracteres() {
-    var textarea = document.getElementById('miTextarea');
-    var maxLength = parseInt(textarea.getAttribute('maxlength'));
-
-    if (textarea.value.length > maxLength) {
-      textarea.value = textarea.value.substring(0, maxLength);
+      if (textarea.value.length > maxLength) {
+        textarea.value = textarea.value.substring(0, maxLength);
+      }
+      let cont = document.getElementById('contador');
+      cont.textContent = "Numero de c aracteres restantes: " + (maxLength - textarea.value.length);
     }
-  }
-</script>
+  </script>
 
 </body>
+
 </html>

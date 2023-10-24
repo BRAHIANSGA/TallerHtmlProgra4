@@ -22,15 +22,15 @@
 
 <script>
   function mostrarTooltip(enlace) {
-    var tooltip = document.getElementById('tooltip');
-    tooltip.innerText = enlace.innerText;
+    let tooltip = document.getElementById('tooltip');
+    tooltip.innerText = "Popover del enlace";
     tooltip.style.display = 'block';
     tooltip.style.top = (enlace.offsetTop + enlace.offsetHeight) + 'px';
     tooltip.style.left = enlace.offsetLeft + 'px';
   }
 
   function ocultarTooltip() {
-    var tooltip = document.getElementById('tooltip');
+    let tooltip = document.getElementById('tooltip');
     tooltip.style.display = 'none';
   }
 </script>

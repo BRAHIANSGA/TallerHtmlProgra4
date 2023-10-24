@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Selección de Fecha con Calendario</title>
   <style>
@@ -14,36 +15,16 @@
       z-index: 1000;
     }
   </style>
+  <script src="js/18.js"></script>
 </head>
+
 <body>
 
-<input type="text" id="fechaInput" placeholder="Seleccione una fecha" readonly onclick="mostrarCalendario()">
-<div id="calendario"></div>
-<p id="fechaSeleccionada"></p>
-
-<script>
-  function mostrarCalendario() {
-    var calendario = document.getElementById('calendario');
-    calendario.style.display = 'block';
-    calendario.innerHTML = '<input type="date" id="calendarioInput" onchange="seleccionarFecha()">';
-
-    // Posicionar el calendario cerca del input
-    var fechaInput = document.getElementById('fechaInput');
-    calendario.style.top = (fechaInput.offsetTop + fechaInput.offsetHeight) + 'px';
-    calendario.style.left = fechaInput.offsetLeft + 'px';
-  }
-
-  function seleccionarFecha() {
-    var calendarioInput = document.getElementById('calendarioInput');
-    var fechaSeleccionada = calendarioInput.value;
-
-    var fechaP = document.getElementById('fechaSeleccionada');
-    fechaP.innerText = 'Fecha seleccionada: ' + fechaSeleccionada;
-
-    var calendario = document.getElementById('calendario');
-    calendario.style.display = 'none';
-  }
-</script>
+  <button id="fechaInput" onclick="mostrarCalendario()">Calendario</button>
+  
+  <div id="calendario"></div>
+  <p id="fechaSeleccionada"></p>
 
 </body>
+
 </html>
