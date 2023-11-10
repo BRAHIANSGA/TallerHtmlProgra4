@@ -1,0 +1,10 @@
+Tomar los formularios realizados en el taller 3 (archivo adjunto en pdf), 
+y modificarlos para que la información enviada sea recibida y procesada en php de manera que se administre en una base de datos.
+
+Para cada uno de los formularios se debe permitir insertar un nuevo registro, 
+mostrar el listado de los registros guardados, modificar los datos de un registro y eliminar un registro determinado.
+
+Se deben hacer las validaciones correspondientes en los campos necesarios antes de guardarlos en la base de datos.
+
+Se debe enviar los archivos necesarios en un solo archivo .zip, 
+incluyendo el script de creación de la base de datos.
