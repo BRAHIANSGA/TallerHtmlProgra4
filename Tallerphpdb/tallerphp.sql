@@ -35,7 +35,7 @@ CREATE TABLE `formulario1` (
   `Apellidos` varchar(255) DEFAULT NULL,
   `Sexo` varchar(255) DEFAULT NULL,
   `FechaNacimiento` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -49,7 +49,7 @@ CREATE TABLE `formulario2` (
   `EditorDeTexto` varchar(255) DEFAULT NULL,
   `Comentarios` text,
   `Procesador` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE `formulario3` (
   `Nombre` varchar(255) DEFAULT NULL,
   `Apellidos` varchar(255) DEFAULT NULL,
   `Telefono` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `formulario4` (
   `Nombre` varchar(255) DEFAULT NULL,
   `Apellidos` varchar(255) DEFAULT NULL,
   `Direccion` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,7 @@ CREATE TABLE `formulario5` (
   `OtraHora` time DEFAULT NULL,
   `OtroFichero` varchar(255) DEFAULT NULL,
   `Texto2` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Índices para tablas volcadas

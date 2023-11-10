@@ -107,7 +107,7 @@
             <img src="img/logo.png" alt="logo ucp" style="width: 30%;">
             <h1 class="text-center">Taller Formularios HTML </h1>
             <hr style="width: 90%;">
-            <form>
+            <form  method="POST" action="../php/crud1.php">
                 <p>Idioma:</p>
                 <input type="radio" name="idioma" value="idiomaingles" id="idiomaingles">
                 <label for="idiomaingles">Inglés</label><br>
