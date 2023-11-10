@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -55,30 +55,30 @@
             </p>
             <div>
                 <ul>
-                    <a href="1.html">
+                    <a href="1.php">
                         <li
                             style="border: 4px solid white; padding: 1%; display: flex;justify-content: center; text-align: center;">
                             Formulario 1
                         </li>
-                        <a href="2.html">
+                        <a href="2.php">
                             <li
                                 style="border: 4px solid white; padding: 1%; display: flex;justify-content: center; text-align: center;">
                                 Formulario 2
                             </li>
                         </a>
-                        <a href="3.html">
+                        <a href="3.php">
                             <li
                                 style="border: 4px solid white; padding: 1%; display: flex;justify-content: center; text-align: center;">
                                 Formulario 3
                             </li>
                         </a>
-                        <a href="4.html">
+                        <a href="4.php">
                             <li
                                 style="border: 4px solid white; padding: 1%; display: flex;justify-content: center; text-align: center;">
                                 Formulario 4
                             </li>
                         </a>
-                        <a href="5.html">
+                        <a href="5.php">
                             <li
                                 style="border: 4px solid white; padding: 1%; display: flex;justify-content: center; text-align: center;">
                                 Formulario 5

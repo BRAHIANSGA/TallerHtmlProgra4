@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -98,7 +98,7 @@
 </head>
 
 <body>
-    <a href="index.html">
+    <a href="index.php">
         <button style="border: 5px solid rgb(128, 30, 0); width: 5% ;">Inicio</button>
     </a>
     <div style="border: 3px solid black; width: 50%; margin-left: 25%;">
