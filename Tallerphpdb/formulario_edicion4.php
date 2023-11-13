@@ -1,23 +1,22 @@
 <?php
-// Archivo: formulario_editar.php
 
-include("db.php"); // Incluye tu archivo de conexión a la base de datos
 
-// Procesar actualización si se envió el formulario
+include("db.php"); 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
+
     $id = $_POST["id"];
     $texto = $_POST["texto"];
     $fecha = $_POST["fecha"];
     $color = $_POST["color"];
     $conectores = implode(',', $_POST["conector"] ?? []);
     $aula = $_POST["aula"];
-    $archivo = $_POST["archivo"]; // Asegúrate de manejar la carga de archivos correctamente
+    $archivo = $_POST["archivo"];
     $nombre = $_POST["nombre"];
     $apellidos = $_POST["apellidos"];
     $direccion = $_POST["direccion"];
 
-    // Consulta SQL para actualizar el registro
     $update_query = "UPDATE formulario4 SET 
                     Texto = '$texto',
                     Fecha = '$fecha',
@@ -30,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Direccion = '$direccion'
                     WHERE Id = $id";
 
-    // Ejecutar la consulta de actualización
+
     if ($conn->query($update_query) === TRUE) {
         echo "Registro actualizado correctamente.";
         header("Location: 4.php");
@@ -40,11 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Verificar si se proporcionó un ID en la URL
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Realizar la consulta a la base de datos
+
     $query = "SELECT * FROM formulario4 WHERE Id = $id";
     $result = $conn->query($query);
 
@@ -54,12 +53,11 @@ if (isset($_GET['id'])) {
         <html>
         <head>
             <title>Formulario de Edición</title>
-            <!-- Aquí puedes agregar tu CSS o JavaScript si es necesario -->
         </head>
         <body>
             <h2>Editar Registro</h2>
             <form action="" method="post">
-                <!-- Hidden input para enviar el ID en el formulario -->
+                <!-- id coulto para actualizra base de datos  -->
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($registro['Id']); ?>">
 
                 <!-- Textarea -->
@@ -86,7 +84,7 @@ if (isset($_GET['id'])) {
                     <option value="a03" <?php if ($registro['Aula'] == 'a03') echo 'selected'; ?>>A03</option>
                 </select><br>
 
-                <!-- Archivo (debería manejar la carga de archivos si es necesario) -->
+                <!-- Archivo  -->
                 <input type="file" name="archivo"><br>
 
                 <!-- Cuadros de texto -->

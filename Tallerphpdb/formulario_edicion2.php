@@ -1,18 +1,18 @@
 <?php
-// Archivo: formulario_editar.php
 
-include("db.php"); // Incluye tu archivo de conexión a la base de datos
 
-// Procesar actualización si se envió el formulario
+include("db.php"); 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
+
     $id = $_POST["id"];
     $asignatura = $_POST["asignatura"];
-    $editorDeTexto = implode(',', $_POST["editor"]); // Maneja múltiples selecciones
+    $editorDeTexto = implode(',', $_POST["editor"]);
     $comentarios = $_POST["comentarios"];
     $procesador = $_POST["procesador"];
 
-    // Consulta SQL para actualizar el registro
+   
     $update_query = "UPDATE formulario2 SET 
                     Asignatura = '$asignatura',
                     EditorDeTexto = '$editorDeTexto',
@@ -20,22 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Procesador = '$procesador'
                     WHERE Id = $id";
 
-    // Ejecutar la consulta de actualización
+  
     if ($conn->query($update_query) === TRUE) {
         echo "Registro actualizado correctamente.";
-        // Otra opción es redirigir después de la actualización
-        header("Location: 2.php"); // Asegúrate de que esta redirección sea correcta
+
+        header("Location: 2.php"); 
         exit();
     } else {
         echo "Error al actualizar el registro: " . $conn->error;
     }
 }
 
-// Verificar si se proporcionó un ID en la URL
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Realizar la consulta a la base de datos
+
     $query = "SELECT * FROM formulario2 WHERE id = $id";
     $result = $conn->query($query);
 
@@ -46,13 +46,12 @@ if (isset($_GET['id'])) {
 
         <head>
             <title>Formulario de Edición</title>
-            <!-- Aquí puedes agregar tu CSS o JavaScript si es necesario -->
         </head>
 
         <body>
             <h2>Editar Registro</h2>
             <form action="" method="post">
-                <!-- Hidden input para enviar el ID en el formulario -->
+                <!-- ID OCULTO PARA ACTUALIZAR -->
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($registro['Id']); ?>">
 
                 <!-- Radios para asignatura -->

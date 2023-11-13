@@ -2,19 +2,19 @@
 
 include("db.php");
 
-// Definir función para obtener registros
+
 function obtenerRegistros($filtroGeneral = '')
 {
     global $conn;
 
-    // Iniciar la consulta base
+
     $query = "SELECT * FROM formulario5";
 
-    // Aplicar el filtro si se proporciona
+
     if (!empty($filtroGeneral)) {
         $filtroGeneral = $conn->real_escape_string($filtroGeneral);
 
-        // Buscar en múltiples campos
+  
         $query .= " WHERE DNI LIKE '%$filtroGeneral%' 
                 OR Nombre LIKE '%$filtroGeneral%' 
                 OR Apellidos LIKE '%$filtroGeneral%' 
@@ -44,7 +44,7 @@ function eliminarRegistro($id)
 {
     global $conn;
 
-    // Preparar y ejecutar la sentencia
+
     $stmt = $conn->prepare("DELETE FROM formulario5 WHERE Id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -90,7 +90,6 @@ function insertarRegistro($datos)
     exit();
 }
 
-// Procesar el formulario si se reciben datos POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['accion']) && $_POST['accion'] == 'eliminar') {
         eliminarRegistro($_POST['id']);

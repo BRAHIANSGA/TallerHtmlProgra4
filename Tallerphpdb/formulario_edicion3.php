@@ -1,11 +1,11 @@
 <?php
-// Archivo: formulario_editar.php
 
-include("db.php"); // Incluye tu archivo de conexión a la base de datos
 
-// Procesar actualización si se envió el formulario
+include("db.php"); 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
+
     $id = $_POST["id"];
     $ciclo = $_POST["ciclo"];
     $fecha = $_POST["fecha"];
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $apellidos = $_POST["apellidos"];
     $telefono = $_POST["telefono"];
 
-    // Consulta SQL para actualizar el registro
+
     $update_query = "UPDATE formulario3 SET 
                     Ciclo = '$ciclo',
                     Fecha = '$fecha',
@@ -36,10 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Telefono = '$telefono'
                     WHERE Id = $id";
 
-    // Ejecutar la consulta de actualización
+
     if ($conn->query($update_query) === TRUE) {
         echo "Registro actualizado correctamente.";
-        // Otra opción es redirigir después de la actualización
+
         header("Location: 3.php");
         exit();
     } else {
@@ -47,11 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Verificar si se proporcionó un ID en la URL
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Realizar la consulta a la base de datos
+
     $query = "SELECT * FROM formulario3 WHERE id = $id";
     $result = $conn->query($query);
 
@@ -63,13 +63,12 @@ if (isset($_GET['id'])) {
 
         <head>
             <title>Formulario de Edición</title>
-            <!-- Aquí puedes agregar tu CSS o JavaScript si es necesario -->
         </head>
 
         <body>
             <h2>Editar Registro</h2>
             <form action="" method="post">
-                <!-- Hidden input para enviar el ID en el formulario -->
+                <!-- id oculto -->
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($registro['Id']); ?>">
 
                 <!-- Radiobuttons para Ciclo -->
@@ -88,7 +87,7 @@ if (isset($_GET['id'])) {
                 <input type="time" name="hora" value="<?php echo isset($registro['Hora']) ? htmlspecialchars($registro['Hora']) : ''; ?>"><br>
 
                 <!-- Checkboxes para Asignaturas -->
-                <!-- Ajustar según el manejo correcto de este campo -->
+
                 <input type="checkbox" name="asignatura[]" value="asignaturageografia" <?php if (isset($registro['Asignaturas']) && in_array('asignaturageografia', explode(',', $registro['Asignaturas']))) echo 'checked'; ?>> Geografía<br>
                 <input type="checkbox" name="asignatura[]" value="asignaturalengua" <?php if (isset($registro['Asignaturas']) && in_array('asignaturalengua', explode(',', $registro['Asignaturas']))) echo 'checked'; ?>> Lengua<br>
                 <input type="checkbox" name="asignatura[]" value="asignaturamatematicas" <?php if (isset($registro['Asignaturas']) && in_array('asignaturamatematicas', explode(',', $registro['Asignaturas']))) echo 'checked'; ?>> Matemáticas<br>

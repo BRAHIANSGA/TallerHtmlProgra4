@@ -1,10 +1,10 @@
 <?php
-// Archivo: formulario_editar.php
 
-include("db.php"); // Incluye tu archivo de conexión a la base de datos
-// Procesar actualización si se envió el formulario
+
+include("db.php"); 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario y convertir a mayúsculas
+  
     $id = $_POST["id"];
     $idioma = strtoupper($_POST["idioma"]);
     $conexion = strtoupper($_POST["conexion"]);
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sexo = isset($_POST["sexo"]) ? strtoupper($_POST["sexo"]) : '';
     $fechaNacimiento = $_POST["fechaNacimiento"];
 
-    // Consulta SQL para actualizar el registro
+ 
     $update_query = "UPDATE formulario1 SET 
                     Idioma = '$idioma',
                     Conexion = '$conexion',
@@ -25,21 +25,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     FechaNacimiento = '$fechaNacimiento'
                     WHERE Id = $id";
 
-    // Ejecutar la consulta de actualización
+    
     if ($conn->query($update_query) === TRUE) {
         echo "Registro actualizado correctamente.";
-        // Otra opción es redirigir después de la actualización
+
          header("Location: 1.php");
          exit();
     } else {
         echo "Error al actualizar el registro: " . $conn->error;
     }
 }
-// Verificar si se proporcionó un ID en la URL
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Realizar la consulta a la base de datos
+
     $query = "SELECT * FROM formulario1 WHERE id = $id";
     $result = $conn->query($query);
 
@@ -51,13 +51,12 @@ if (isset($_GET['id'])) {
 
         <head>
             <title>Formulario de Edición</title>
-            <!-- Aquí puedes agregar tu CSS o JavaScript si es necesario -->
         </head>
 
         <body>
             <h2>Editar Registro</h2>
             <form action="" method="post">
-                <!-- Hidden input para enviar el ID en el formulario -->
+
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($registro['Id']); ?>">
 
                 <!-- Radios para idioma -->
@@ -84,7 +83,7 @@ if (isset($_GET['id'])) {
                 <input type="text" name="apellidos" placeholder="Apellidos"
                     value="<?php echo isset($registro['Apellidos']) ? htmlspecialchars($registro['Apellidos']) : ''; ?>"><br>
 
-                <!-- Lista desplegable múltiple (ajustar según el manejo correcto de este campo) -->
+                <!-- Lista desplegable múltiple-->
                 <select name="sexolistamultiple[]" multiple>
                     <option value="HOMBRE" <?php if (isset($registro['sexolistamultiple']) && in_array('HOMBRE', explode(',', $registro['sexolistamultiple'])))
                         echo 'selected'; ?>>Hombre</option>
@@ -92,7 +91,7 @@ if (isset($_GET['id'])) {
                         echo 'selected'; ?>>Mujer</option>
                 </select><br>
 
-                <!-- Checkbox (ajustar según el manejo correcto de este campo) -->
+                <!-- Checkbox  -->
                 <input type="checkbox" name="sexo" value="MUJER" <?php if (isset($registro['Sexo']) && $registro['Sexo'] == 'MUJER')
                     echo 'checked'; ?>> Mujer<br>
                 <input type="checkbox" name="sexo" value="HOMBRE" <?php if (isset($registro['Sexo']) && $registro['Sexo'] == 'HOMBRE')
